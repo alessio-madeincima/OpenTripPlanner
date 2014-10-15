@@ -184,8 +184,10 @@ otp.core.TransitIndex = otp.Class({
         var params = {
             agency: agencyId,
             id: stopId,
-            startTime : startTime * 1000, // legacy TransitIndex API still uses milliseconds
-            endTime : endTime * 1000, // legacy TransitIndex API still uses milliseconds
+            /*raf startTime : startTime * 1000, // legacy TransitIndex API still uses milliseconds
+            endTime : endTime * 1000, // legacy TransitIndex API still uses milliseconds */
+            startTime : startTime, 
+            endTime : endTime, 
             extended : true,
         };
         if(otp.config.routerId !== undefined) {
