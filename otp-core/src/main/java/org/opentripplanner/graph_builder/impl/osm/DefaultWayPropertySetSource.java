@@ -462,8 +462,11 @@ public class DefaultWayPropertySetSource implements WayPropertySetSource {
         props.defaultProperties.setPermission(StreetTraversalPermission.ALL);
 
         /* and the notes */
-        createNotes(props, "note=*", "{note}");
-        createNotes(props, "notes=*", "{notes}");
+        //createNotes(props, "note=*", "{note}");
+        //createNotes(props, "notes=*", "{notes}");
+        //raf per evitare errori in graph builder...{note} e {notes} li aggiungo in WayProperties
+        createNotes(props, "note=*", "note.note");
+        createNotes(props, "notes=*", "note.notes");
         createNotes(props, "RLIS:bicycle=caution_area", "note.caution");
         createNotes(props, "CCGIS:bicycle=caution_area", "note.caution");
         createNotes(props, "surface=unpaved", "note.unpaved_surface");
