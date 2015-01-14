@@ -554,7 +554,7 @@ otp.widgets.ItinerariesWidget =
             });
 
 
-            $('<div class="otp-itin-leg-endpointDescSub">' + _tr("Stop") + ' #'+leg.from.stopId.id+' [<a href="#">' + _tr("Stop Viewer") +'</a>]</div>')
+            $('<div class="otp-itin-leg-endpointDescSub">' + _tr("Stop") + ' #'+leg.from.stopId+' [<a href="#">' + _tr("Stop Viewer") +'</a>]</div>')
             .appendTo(legDiv)
             .click(function(evt) {
                 if(!this_.module.stopViewerWidget) {
@@ -608,7 +608,7 @@ otp.widgets.ItinerariesWidget =
 
                 for(var i=0; i < leg.intermediateStops.length; i++) {
                     var stop = leg.intermediateStops[i];
-                    $('<div class="otp-itin-leg-intStopsListItem">'+(i+1)+'. '+stop.name+' (ID #'+stop.stopId.id+')</div>').
+                    $('<div class="otp-itin-leg-intStopsListItem">'+(i+1)+'. '+stop.name+' (ID #'+stop.stopId+')</div>').
                     appendTo(intStopsListDiv)
                     .data("stop", stop)
                     .click(function(evt) {
