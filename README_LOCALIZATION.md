@@ -73,7 +73,7 @@ Translator comments **must** always start with "**TRANSLATORS:**" and must be in
 ```javascript
 //TRANSLATORS: Board Public transit route name (agency name     
 //Stop ID ) start time                                          
-html += '<li><b>' + _tr('Board') + '</b>: ' + leg.from.name + ' (' + leg.from.stopId.agencyId + ' Stop ID #' +
+html += '<li><b>' + _tr('Board') + '</b>: ' + leg.from.name + ' (' + leg.from.stopId + ' Stop ID #' +
 
 //with named sprintf parameters ()preferred option)
 
