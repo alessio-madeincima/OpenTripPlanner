@@ -17,8 +17,8 @@ otp.namespace("otp.modules.planner");
 otp.modules.planner.defaultQueryParams = {
     startPlace                      : null,
     endPlace                        : null,
-    time                            : moment().format(otp.config.locale.time.time_format),
-    date                            : moment().format(otp.config.locale.time.date_format),
+    time                            : moment().format('HH:mm'),//format(otp.config.locale.time.time_format),
+    date                            : moment().format('YYYY-MM-DD'),//format(otp.config.locale.time.date_format),
     arriveBy                        : false,
     wheelchair                      : false,
     mode                            : "TRANSIT,WALK",
