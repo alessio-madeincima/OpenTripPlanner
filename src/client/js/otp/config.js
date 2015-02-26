@@ -17,12 +17,12 @@ otp.config = {
     //value is name of settings file for localization in locale subfolder
     //File should be loaded in index.html
     locales : {
-        'en': otp.locale.English,
-        'de': otp.locale.German,
-        'sl': otp.locale.Slovenian,
-        'fr': otp.locale.French,
         'it': otp.locale.Italian,
-        'ca_ES': otp.locale.Catalan
+        'en': otp.locale.English,
+        'fr': otp.locale.French,
+        'de': otp.locale.German,
+        //'sl': otp.locale.Slovenian,
+        //'ca_ES': otp.locale.Catalan
     },
 
     languageChooser : function() {
@@ -39,7 +39,16 @@ otp.config = {
         str += "</ul>";
         return str;
     },
-
+    languageMenu : function() {
+        var active_locales = _.keys(otp.config.locales);
+        var str = '';
+         _.each(active_locales, function(loc, i){
+             if (i==0) str += '<span>';
+             str += '<li><a href="?setLng=' + loc+ '">' + loc +'</a></li>';
+             if (i==0) str += '</span>';
+        });
+        return str;
+    },
 
     /**
      * The OTP web service locations
@@ -146,7 +155,7 @@ otp.config = {
         {
             id : 'planner',
             className : 'otp.modules.multimodal.MultimodalPlannerModule',
-            defaultBaseLayer : 'OSM',
+            defaultBaseLayer : 'MapQuest OSM',
             isDefault: true
         }/*,
         {
@@ -174,7 +183,7 @@ otp.config = {
              'url': 'http://bunet.5t.torino.it/otp-geocoder/geocode',
              'addressParam': 'address'
          }
-    ],
+     ],
 
     
 
