@@ -164,7 +164,7 @@ otp.widgets.ItinerariesWidget =
 
     renderButtonRow : function() {
 
-        var serviceBreakTime = "03:00am";
+        var serviceBreakTime = "03:00";//HH:mm (ISO 8601)
         var this_ = this;
         var buttonRow = $("<div class='otp-itinsButtonRow'></div>").appendTo(this.footer);
         //TRANSLATORS: button to first itinerary
@@ -174,7 +174,7 @@ otp.widgets.ItinerariesWidget =
             var stopId = itin.getFirstStopID();
             _.extend(params, {
                 startTransitStopId :  stopId,
-                date : this_.module.date,
+                date : moment(this_.module.date, otp.config.locale.time.date_format).format("YYYY-MM-DD"),
                 time : serviceBreakTime,
                 arriveBy : false
             });
@@ -190,7 +190,7 @@ otp.widgets.ItinerariesWidget =
             var stopId = itin.getFirstStopID();
             _.extend(params, {
                 startTransitStopId :  stopId,
-                time : otp.util.Time.formatItinTime(newEndTime, "h:mma"),
+                time : otp.util.Time.formatItinTime(newEndTime, "HH:mm"),
                 date : otp.util.Time.formatItinTime(newEndTime, "YYYY-MM-DD"),
                 arriveBy : true
             });
@@ -206,7 +206,7 @@ otp.widgets.ItinerariesWidget =
             var stopId = itin.getFirstStopID();
             _.extend(params, {
                 startTransitStopId :  stopId,
-                time : otp.util.Time.formatItinTime(newStartTime, "h:mma"),
+                time : otp.util.Time.formatItinTime(newStartTime, "HH:mm"),
                 date : otp.util.Time.formatItinTime(newStartTime, "YYYY-MM-DD"),
                 arriveBy : false
             });
@@ -221,7 +221,7 @@ otp.widgets.ItinerariesWidget =
             var stopId = itin.getFirstStopID();
             _.extend(params, {
                 startTransitStopId :  stopId,
-                date : moment(this_.module.date, "YYYY-MM-DD").add('days', 1).format("YYYY-MM-DD"),
+                date : moment(this_.module.date, otp.config.locale.time.date_format).add('days', 1).format("YYYY-MM-DD"),
                 time : serviceBreakTime,
                 arriveBy : true
             });

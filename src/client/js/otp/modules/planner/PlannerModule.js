@@ -325,13 +325,12 @@ otp.modules.planner.PlannerModule =
                 return;
             }
 
-            var addToStart = this.arriveBy ? 0 : this.startTimePadding;
+            //var addToStart = this.arriveBy ? 0 : this.startTimePadding;
        	    queryParams = {
                 fromPlace: this.getStartOTPString(),
                 toPlace: this.getEndOTPString(),
-                time : (this.time) ? otp.util.Time.correctAmPmTimeString(this.time) : moment().format("h:mma"),
-                //time : (this.time) ? moment(this.time).add("s", addToStart).format("h:mma") : moment().add("s", addToStart).format("h:mma"),
-                date : (this.date) ? moment(this.date, otp.config.locale.time.date_format).format("YYYY-MM-DD") :moment().format("YYYY-MM-DD"),
+                time : (this.time) ? moment(this.time, otp.config.locale.time.time_format).format("HH:mm") : moment().format("HH:mm"),
+                date : (this.date) ? moment(this.date, otp.config.locale.time.date_format).format("YYYY-MM-DD") : moment().format("YYYY-MM-DD"),
                 mode: this.mode,
                 maxWalkDistance: this.maxWalkDistance
             };
