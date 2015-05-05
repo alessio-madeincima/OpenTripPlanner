@@ -370,14 +370,17 @@ otp.widgets.ItinerariesWidget =
                 }
             }
             else if(leg.agencyId !== null) {
-                headerHtml += ": "+leg.agencyId+", ";
+                //headerHtml += ": "+leg.agencyId+", ";
+                headerHtml += ": ";
                 if(leg.route !== leg.routeLongName) {
-                    headerHtml += "("+leg.route+") ";
+                    //headerHtml += "("+leg.route+") ";
+                    headerHtml += leg.route+" ";
                 }
+                headerHtml += "("+leg.agencyId+") ";
                 if (leg.routeLongName) {
                     headerHtml += leg.routeLongName;
                 }
-
+                
                 if(leg.headsign) {
                     /*TRANSLATORS: used in sentence like: <Long name of public transport route> "to" <Public transport
                     headsign>. Used in showing itinerary*/
