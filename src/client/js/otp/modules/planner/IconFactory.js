@@ -30,8 +30,8 @@ var EndFlagIcon = L.Icon.extend({
     options: {
         iconUrl: resourcePath + 'images/5t/marker-flag-end.png',
         shadowUrl: null,
-        iconSize: new L.Point(71, 48),
-        iconAnchor: new L.Point(35, 48),
+        iconSize: new L.Point(87, 48),
+        iconAnchor: new L.Point(43, 48),
         popupAnchor: new L.Point(0, -48)
     }
 });
