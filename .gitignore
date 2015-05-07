@@ -26,3 +26,4 @@ gen-py/
 .idea/
 .sonar
 _site/
+otp-batch-analyst

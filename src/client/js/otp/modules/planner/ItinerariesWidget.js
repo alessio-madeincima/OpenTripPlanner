@@ -174,7 +174,7 @@ otp.widgets.ItinerariesWidget =
             var stopId = itin.getFirstStopID();
             _.extend(params, {
                 startTransitStopId :  stopId,
-                date : this_.module.date,
+                date: moment(this_.module.date, otp.config.locale.time.date_format).format("MM-DD-YYYY"),
                 time : serviceBreakTime,
                 arriveBy : false
             });
@@ -221,7 +221,7 @@ otp.widgets.ItinerariesWidget =
             var stopId = itin.getFirstStopID();
             _.extend(params, {
                 startTransitStopId :  stopId,
-                date : moment(this_.module.date, "MM-DD-YYYY").add('days', 1).format("MM-DD-YYYY"),
+                date : moment(this_.module.date, otp.config.locale.time.date_format).add('days', 1).format("MM-DD-YYYY"),
                 time : serviceBreakTime,
                 arriveBy : true
             });
@@ -370,14 +370,17 @@ otp.widgets.ItinerariesWidget =
                 }
             }
             else if(leg.agencyId !== null) {
-                headerHtml += ": "+leg.agencyId+", ";
+                //headerHtml += ": "+leg.agencyId+", ";
+                headerHtml += ": ";
                 if(leg.route !== leg.routeLongName) {
-                    headerHtml += "("+leg.route+") ";
+                    //headerHtml += "("+leg.route+") ";
+                    headerHtml += leg.route+" ";
                 }
+                headerHtml += "("+leg.agencyId+") ";
                 if (leg.routeLongName) {
                     headerHtml += leg.routeLongName;
                 }
-
+                
                 if(leg.headsign) {
                     /*TRANSLATORS: used in sentence like: <Long name of public transport route> "to" <Public transport
                     headsign>. Used in showing itinerary*/

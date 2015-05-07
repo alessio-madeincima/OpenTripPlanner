@@ -59,8 +59,11 @@ public class ProfileResource {
             @QueryParam("minCarTime")   @DefaultValue("1")     int minCarTime,
             @QueryParam("minBikeTime")  @DefaultValue("1")     int minBikeTime,
             @QueryParam("orderBy")      @DefaultValue("AVG")   Option.SortOrder orderBy,
-            @QueryParam("limit")        @DefaultValue("10")    int limit,       // max options to return PER ACCESS MODE
+            @QueryParam("limit")        @DefaultValue("15")    int limit,       // max options to return PER ACCESS MODE
             @QueryParam("suboptimal")   @DefaultValue("5")     int suboptimalMinutes,
+            @QueryParam("bikeSafe")     @DefaultValue("1")     int bikeSafe,
+            @QueryParam("bikeSlope")    @DefaultValue("1")     int bikeSlope,
+            @QueryParam("bikeTime")     @DefaultValue("1")     int bikeTime,
             @QueryParam("accessModes")  @DefaultValue("WALK,BICYCLE") QualifiedModeSet accessModes,
             @QueryParam("egressModes")  @DefaultValue("WALK")         QualifiedModeSet egressModes,
             @QueryParam("directModes")  @DefaultValue("WALK,BICYCLE") QualifiedModeSet directModes,
@@ -78,6 +81,9 @@ public class ProfileResource {
         QueryParameter.checkRangeInclusive(minBikeTime, 0, maxBikeTime);
         QueryParameter.checkRangeInclusive(minCarTime,  0, maxCarTime);
         QueryParameter.checkRangeInclusive(suboptimalMinutes, 0, 30);
+        QueryParameter.checkRangeInclusive(bikeSafe,  0, 1000);
+        QueryParameter.checkRangeInclusive(bikeSlope, 0, 1000);
+        QueryParameter.checkRangeInclusive(bikeTime,  0, 1000);
 
         ProfileRequest req = new ProfileRequest();
         req.fromLat      = from.lat;
@@ -106,6 +112,9 @@ public class ProfileResource {
         req.maxCarTime   = maxCarTime;
         req.minBikeTime  = minBikeTime;
         req.minCarTime   = minCarTime;
+        req.bikeSafe     = bikeSafe;
+        req.bikeSlope    = bikeSlope;
+        req.bikeTime     = bikeTime;
         req.suboptimalMinutes = suboptimalMinutes;
 
         if (req.analyst) {
@@ -138,6 +147,9 @@ public class ProfileResource {
             try {
                 ProfileResponse response = router.route();
                 return Response.status(Status.OK).entity(response).build();
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(throwable.toString()).build();
             } finally {
                 router.cleanup(); // destroy routing contexts even when an exception happens
             }

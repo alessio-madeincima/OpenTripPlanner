@@ -13,22 +13,14 @@
 
 package org.opentripplanner.api.resource;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Set;
-import java.util.TimeZone;
-
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.LineString;
 import org.onebusaway.gtfs.model.Agency;
 import org.onebusaway.gtfs.model.Route;
 import org.onebusaway.gtfs.model.Stop;
 import org.onebusaway.gtfs.model.Trip;
-import org.opentripplanner.api.model.Itinerary;
-import org.opentripplanner.api.model.Leg;
-import org.opentripplanner.api.model.Place;
-import org.opentripplanner.api.model.RelativeDirection;
-import org.opentripplanner.api.model.TripPlan;
-import org.opentripplanner.api.model.WalkStep;
+import org.opentripplanner.api.model.*;
 import org.opentripplanner.common.geometry.DirectionUtils;
 import org.opentripplanner.common.geometry.GeometryUtils;
 import org.opentripplanner.common.geometry.PackedCoordinateSequence;
@@ -36,20 +28,8 @@ import org.opentripplanner.common.model.P2;
 import org.opentripplanner.profile.BikeRentalStationInfo;
 import org.opentripplanner.routing.alertpatch.Alert;
 import org.opentripplanner.routing.alertpatch.AlertPatch;
-import org.opentripplanner.routing.core.RoutingContext;
-import org.opentripplanner.routing.core.RoutingRequest;
-import org.opentripplanner.routing.core.ServiceDay;
-import org.opentripplanner.routing.core.State;
-import org.opentripplanner.routing.core.TraverseMode;
-import org.opentripplanner.routing.edgetype.AreaEdge;
-import org.opentripplanner.routing.edgetype.ElevatorAlightEdge;
-import org.opentripplanner.routing.edgetype.FreeEdge;
-import org.opentripplanner.routing.edgetype.OnboardEdge;
-import org.opentripplanner.routing.edgetype.PathwayEdge;
-import org.opentripplanner.routing.edgetype.PatternEdge;
-import org.opentripplanner.routing.edgetype.PatternInterlineDwell;
-import org.opentripplanner.routing.edgetype.StreetEdge;
-import org.opentripplanner.routing.edgetype.TripPattern;
+import org.opentripplanner.routing.core.*;
+import org.opentripplanner.routing.edgetype.*;
 import org.opentripplanner.routing.error.TrivialPathException;
 import org.opentripplanner.routing.graph.Edge;
 import org.opentripplanner.routing.graph.Graph;
@@ -65,9 +45,7 @@ import org.opentripplanner.util.PolylineEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LineString;
+import java.util.*;
 
 /**
  * A library class with only static methods used in converting internal GraphPaths to TripPlans, which are
@@ -373,32 +351,15 @@ public abstract class GraphPathToTripPlanConverter {
         WalkStep previousStep = null;
 
         String lastMode = null;
+
+        BikeRentalStationVertex onVertex = null, offVertex = null;
+
         for (int i = 0; i < legsStates.length; i++) {
             List<WalkStep> walkSteps = generateWalkSteps(graph, legsStates[i], previousStep);
             String legMode = legs.get(i).mode;
             if(legMode != lastMode && !walkSteps.isEmpty()) {
                 walkSteps.get(0).newMode = legMode;
                 lastMode = legMode;
-            }
-
-            if(legMode == "BICYCLE") {
-                // check if leg starts with a bike station
-                Edge firstEdge = legsStates[i][0].backEdge;
-                if(firstEdge.getFromVertex() instanceof BikeRentalStationVertex) {
-                    walkSteps.get(0).bikeRentalOnStation = new BikeRentalStationInfo((BikeRentalStationVertex) firstEdge.getFromVertex());
-                }
-                else if(firstEdge.getToVertex() instanceof BikeRentalStationVertex) {
-                    walkSteps.get(0).bikeRentalOnStation = new BikeRentalStationInfo((BikeRentalStationVertex) firstEdge.getToVertex());
-                }
-
-                // check if leg ends with a bike station
-                Edge lastEdge = legsStates[i][legsStates[i].length - 1].backEdge;
-                if(lastEdge.getFromVertex() instanceof BikeRentalStationVertex) {
-                    walkSteps.get(walkSteps.size()-1).bikeRentalOffStation = new BikeRentalStationInfo((BikeRentalStationVertex) lastEdge.getFromVertex());
-                }
-                else if(lastEdge.getToVertex() instanceof BikeRentalStationVertex) {
-                    walkSteps.get(walkSteps.size()-1).bikeRentalOffStation = new BikeRentalStationInfo((BikeRentalStationVertex) lastEdge.getToVertex());
-                }
             }
 
             legs.get(i).walkSteps = walkSteps;
@@ -728,10 +689,16 @@ public abstract class GraphPathToTripPlanConverter {
         int roundaboutExit = 0; // track whether we are in a roundabout, and if so the exit number
         String roundaboutPreviousStreet = null;
 
+        State onBikeRentalState = null, offBikeRentalState = null;
+
         for (int i = 0; i < states.length - 1; i++) {
             State backState = states[i];
             State forwardState = states[i + 1];
             Edge edge = forwardState.getBackEdge();
+
+            if(edge instanceof RentABikeOnEdge) onBikeRentalState = forwardState;
+            if(edge instanceof RentABikeOffEdge) offBikeRentalState = forwardState;
+
             boolean createdNewStep = false, disableZagRemovalForThisStep = false;
             if (edge instanceof FreeEdge) {
                 continue;
@@ -993,6 +960,17 @@ public abstract class GraphPathToTripPlanConverter {
 
             step.edges.add(edge);
         }
+
+        // add bike rental information if applicable
+        if(onBikeRentalState != null && !steps.isEmpty()) {
+            steps.get(steps.size()-1).bikeRentalOnStation = 
+                    new BikeRentalStationInfo((BikeRentalStationVertex) onBikeRentalState.getBackEdge().getToVertex());
+        }
+        if(offBikeRentalState != null && !steps.isEmpty()) {
+            steps.get(0).bikeRentalOffStation = 
+                    new BikeRentalStationInfo((BikeRentalStationVertex) offBikeRentalState.getBackEdge().getFromVertex());
+        }
+
         return steps;
     }
 

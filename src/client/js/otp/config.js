@@ -65,7 +65,10 @@ otp.config = {
     // In the 0.10.x API the base path is "otp-rest-servlet/ws"
     // From 0.11.x onward the routerId is a required part of the base path.
     // If using a servlet container, the OTP WAR should be deployed to context path /otp
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5twork
     restService: "otpws/routers/default",
 
     /**
@@ -98,7 +101,8 @@ otp.config = {
      },
      {
          name: 'Mappa Rete TPL',
-         tileUrl: 'http://185.27.252.211/tilegen/{z}/{x}/{y}.png',
+         //tileUrl: 'http://185.27.252.211/tilegen/{z}/{x}/{y}.png',
+         tileUrl: 'http://tileserver.memomaps.de/tilegen/{z}/{x}/{y}.png',
          attribution : 'Lines map courtesy of <a href="http://www.öpnvkarte.de" target="_blank">ÖPNV Karte</a>. Data, imagery and map information provided by <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors. '
      },
      ],
@@ -187,7 +191,10 @@ otp.config = {
          }
          
      ],
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5twork
 
 
     //This is shown if showLanguageChooser is true

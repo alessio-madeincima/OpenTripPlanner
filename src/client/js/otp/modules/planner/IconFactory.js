@@ -30,8 +30,8 @@ var EndFlagIcon = L.Icon.extend({
     options: {
         iconUrl: resourcePath + 'images/5t/marker-flag-end.png',
         shadowUrl: null,
-        iconSize: new L.Point(71, 48),
-        iconAnchor: new L.Point(35, 48),
+        iconSize: new L.Point(87, 48),
+        iconAnchor: new L.Point(43, 48),
         popupAnchor: new L.Point(0, -48)
     }
 });
@@ -313,9 +313,9 @@ otp.modules.planner.IconFactory = otp.Class({
         mode = mode.toLowerCase();
         highlight = highlight || false;
         var html = '<div class="otp-itin-div-icon-topRow-'+quadrant[0]+'">';
-        if(!isOrigin) html += '<img src="'+otp.config.resourcePath+'images/mode/arrow.png" style="margin-right:2px;">';
+        //if(!isOrigin) html += '<img src="'+otp.config.resourcePath+'images/mode/arrow.png" style="margin-right:2px;">';
         html += '<img src="'+otp.config.resourcePath+'images/mode/'+mode+'.png">';
-        if(isOrigin) html += '<img src="'+otp.config.resourcePath+'images/mode/arrow.png" style="margin-left:2px;">';
+        //if(isOrigin) html += '<img src="'+otp.config.resourcePath+'images/mode/arrow.png" style="margin-left:2px;">';
         html += '</div>';
         //Removes AM/PM at the end of time if it exists (Time is too long
         //otherwise)

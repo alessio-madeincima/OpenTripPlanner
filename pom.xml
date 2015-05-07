@@ -6,7 +6,7 @@
     <url>http://opentripplanner.org/</url>
     <groupId>org.opentripplanner</groupId>
     <artifactId>otp</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>0.16.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <scm>
@@ -64,6 +64,13 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
+            </resource>
+            <resource>
+                <!-- shell scripts to start up OTP, need to be filtered to get JAR file name -->
+                <directory>src/scripts</directory>
+                <filtering>true</filtering>
+                <!-- Copy the scripts up into the root of the repo, not /target/classes -->
+                <targetPath>../..</targetPath>
             </resource>
             <resource>
                 <directory>src/client</directory>

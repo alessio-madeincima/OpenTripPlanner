@@ -32,10 +32,8 @@ public class StreetSegment {
     private static final Logger LOG = LoggerFactory.getLogger(StreetSegment.class);
 
     @JsonSerialize(using = ToStringSerializer.class) // as a string (e.g. "BICYCLE_RENT" instead of a nested object)
-    public QualifiedMode qmode;
+    public QualifiedMode mode;
     public int time;
-    public EncodedPolylineBean geometry;
-    public List<WalkStep> walkSteps = Lists.newArrayList();
     public List<StreetEdgeInfo> streetEdges = Lists.newArrayList();
 
     /**
@@ -56,14 +54,14 @@ public class StreetSegment {
                 }
             }
         }
-        Geometry geom = GeometryUtils.getGeometryFactory().createLineString(coordinates);
-        this.geometry = PolylineEncoder.createEncodings(geom);
         Itinerary itin = GraphPathToTripPlanConverter.generateItinerary(path, false);
         for (Leg leg : itin.legs) {
-            walkSteps.addAll(leg.walkSteps);
             // populate the streetEdges array
             for(WalkStep walkStep : leg.walkSteps) {
                 int i = 0;
+                // TODO this initialization logic seems like it should be in the walkStep constructor,
+                // or walkstep and edgeInfo should be merged. We are also iterating over the edges twice (see above)
+                // to build up the geometry separately.
                 for(Edge edge : walkStep.edges) {
                     StreetEdgeInfo edgeInfo = new StreetEdgeInfo(edge);
                     if(i == 0) {
@@ -74,10 +72,10 @@ public class StreetSegment {
                         edgeInfo.stayOn = walkStep.stayOn;
                         edgeInfo.area = walkStep.area;
                         edgeInfo.bogusName = walkStep.bogusName;
-                        edgeInfo.bikeRentalOnStation = walkStep.bikeRentalOnStation;
+                        edgeInfo.bikeRentalOffStation = walkStep.bikeRentalOffStation;
                     }
                     if(i == walkStep.edges.size() - 1) {
-                        edgeInfo.bikeRentalOffStation = walkStep.bikeRentalOffStation;
+                        edgeInfo.bikeRentalOnStation = walkStep.bikeRentalOnStation;
                     }
                     streetEdges.add(edgeInfo);
                     i++;
@@ -90,7 +88,7 @@ public class StreetSegment {
     /** A StreetSegment is very similar to a StopAtDistance but it's a response object so the State has to be rendered into walksteps. */
     public StreetSegment (StopAtDistance sd) {
         this(sd.state);
-        qmode = sd.qmode; // Intended mode is known more reliably in a StopAtDistance than from a State.
+        mode = sd.qmode; // Intended mode is known more reliably in a StopAtDistance than from a State.
     }
 
     /** Make a collections of StreetSegments from a collection of StopAtDistance. */
