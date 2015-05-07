@@ -65,10 +65,7 @@ otp.config = {
     // In the 0.10.x API the base path is "otp-rest-servlet/ws"
     // From 0.11.x onward the routerId is a required part of the base path.
     // If using a servlet container, the OTP WAR should be deployed to context path /otp
-<<<<<<< HEAD
 
-=======
->>>>>>> 5twork
     restService: "otpws/routers/default",
 
     /**
@@ -191,10 +188,7 @@ otp.config = {
          }
          
      ],
-<<<<<<< HEAD
 
-=======
->>>>>>> 5twork
 
 
     //This is shown if showLanguageChooser is true
