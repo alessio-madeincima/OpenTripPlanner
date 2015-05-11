@@ -276,7 +276,7 @@ otp.widgets.ItinerariesWidget =
         var leftPx = startPx + startPct * pxSpan;
         var widthPx = pxSpan * (itinSpan / maxSpan);
 
-        div.append('<div style="position:absolute; width: '+(widthPx+5)+'px; height: 2px; left: '+(leftPx-2)+'px; top: 9px; background: black;" />');
+        //div.append('<div style="position:absolute; width: '+(widthPx+5)+'px; height: 2px; left: '+(leftPx-2)+'px; top: 9px; background: black;" />');
 
         var timeStr = otp.util.Time.formatItinTime(itin.getStartTime(), otp.config.locale.time.time_format);
 	/*timeStr = timeStr.substring(0, timeStr.length - 1);*/
@@ -316,13 +316,13 @@ otp.widgets.ItinerariesWidget =
     },
 
     getModeColor : function(mode) {
-        if(mode === "WALK") return '#bbb';
-        if(mode === "BICYCLE") return '#44f';
-        if(mode === "SUBWAY") return '#f00';
-        if(mode === "RAIL") return '#b00';
-        if(mode === "BUS") return '#0f0';
-        if(mode === "TRAM") return '#f00';
-        return '#aaa';
+        if(mode === "WALK") return '#97ba43';
+        if(mode === "BICYCLE") return '#f0cc3b';
+        if(mode === "SUBWAY") return '#d03939';
+        if(mode === "RAIL") return '#5a95c7';
+        if(mode === "BUS") return '#f0952a';
+        if(mode === "TRAM") return '#f0952a';
+        return '#97ba43';
     },
 
 
