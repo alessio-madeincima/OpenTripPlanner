@@ -39,7 +39,7 @@ otp.widgets.transit.RouteBasedWidget =
 
         var routeSelectDiv = $('<div class="otp-tripViewer-select notDraggable" />').appendTo(this.mainDiv);
         //TRANSLATORS: Public transit Route: routename (Used in Trip viewer)
-        $('<div style="float: left;">' + _tr('Route:') + '</div>').appendTo(routeSelectDiv);
+        $('<label for="'+this.id+'-routeSelect" >' + _tr('Route:') + '</label>').appendTo(routeSelectDiv);
         this.routeSelect = $('<select id="'+this.id+'-routeSelect" style="width:100%;"></select>')
         .appendTo($('<div style="margin-left:60px;">').appendTo(routeSelectDiv))
         .change(function() {
@@ -59,7 +59,7 @@ otp.widgets.transit.RouteBasedWidget =
         var variantSelectDiv = $('<div class="otp-tripViewer-select notDraggable" />').appendTo(this.mainDiv);
         //TRANSLATORS: Public Transit Route variant: Start - end stop (Used in
         //trip viewer)
-        $('<div style="float: left;">' + _tr('Variant:') + '</div>').appendTo(variantSelectDiv);
+        $('<label for="'+this.id+'-variantSelect">' + _tr('Variant:') + '</label>').appendTo(variantSelectDiv);
         this.variantSelect = $('<select id="'+this.id+'-variantSelect" style="width:100%;"></select>')
         .appendTo($('<div style="margin-left:60px;">').appendTo(variantSelectDiv))
         .change(function() {
