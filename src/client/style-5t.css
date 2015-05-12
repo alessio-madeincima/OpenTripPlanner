@@ -132,7 +132,17 @@ author: Madeincima.it
 
 #otp-spinner{padding:20px;opacity:.95;background:#fff;border-radius:5px;box-shadow:0px 0px 5px #666;}
 
-.otp-itin-div-icon-sw{background:url(images/5t/mode_bubble_sw.png);}
+.otp-itin-div-icon {width: 89px;height: 52px;_text-align: center;font-size: 9px;font-weight: bold;}
+
+.otp-itin-div-icon-nw {    background: url('images/5t/mode/mode_bubble_nw.png');}
+.otp-itin-div-icon-ne {    background: url('images/5t/mode/mode_bubble_ne.png');}
+.otp-itin-div-icon-sw {    background: url('images/5t/mode/mode_bubble_sw.png');}
+.otp-itin-div-icon-se {    background: url('images/5t/mode/mode_bubble_se.png');}
+.otp-itin-div-icon-nw-highlight {    background: url('images/5t/mode/mode_bubble_nw_highlight.png');}
+.otp-itin-div-icon-ne-highlight {    background: url('images/5t/mode/mode_bubble_ne_highlight.png');}
+.otp-itin-div-icon-sw-highlight {    background: url('images/5t/mode/mode_bubble_sw_highlight.png');}
+.otp-itin-div-icon-se-highlight {    background: url('images/5t/mode/mode_bubble_se_highlight.png');}
+
 
 .otp-itinsAccord-header-segment{height:23px;color:#fff;}
 .otp-itinsAccord-header-time{color:#404040}
