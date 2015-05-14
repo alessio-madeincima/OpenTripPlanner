@@ -65,7 +65,6 @@ otp.config = {
     // In the 0.10.x API the base path is "otp-rest-servlet/ws"
     // From 0.11.x onward the routerId is a required part of the base path.
     // If using a servlet container, the OTP WAR should be deployed to context path /otp
-
     restService: "otpws/routers/default",
 
     /**
@@ -81,29 +80,34 @@ otp.config = {
      *       applicable
      *
      */
-     
-     baseLayers: [
-     {
-         name: 'OSM',
-         //tileUrl : 'http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
-         tileUrl : 'http://{s}.mz.5t.torino.it/hot/{z}/{x}/{y}.png',
-         subdomains : ['a','b','c'],
-         attribution : 'Data, imagery and map information provided by <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
-     },
-     {
-         name: 'MapQuest OSM',
-         tileUrl: 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png',
-         subdomains : ['otile1','otile2','otile3','otile4'],
-         attribution : 'Data, imagery and map information provided by <a href="http://open.mapquest.com" target="_blank">MapQuest</a>, <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
-     },
-     {
-         name: 'Mappa Rete TPL',
-         //tileUrl: 'http://185.27.252.211/tilegen/{z}/{x}/{y}.png',
-         tileUrl: 'http://tileserver.memomaps.de/tilegen/{z}/{x}/{y}.png',
-         attribution : 'Lines map courtesy of <a href="http://www.öpnvkarte.de" target="_blank">ÖPNV Karte</a>. Data, imagery and map information provided by <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors. '
-     },
-     ],
-    
+
+    baseLayers: [
+	{
+	   name: 'OSM',
+	   //tileUrl : 'http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
+	   tileUrl : 'http://{s}.mz.5t.torino.it/hot/{z}/{x}/{y}.png',
+	   subdomains : ['a','b','c'],
+	   attribution : 'Data, imagery and map information provided by <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
+	},
+        {
+            name: 'Transport Tiles',
+            tileUrl: 'http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png',
+            subdomains : ['a','b','c'],
+            attribution: 'Data from <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors. Tiles from <a href="http://www.thunderforest.com/transport/">Andy Allan</a>'
+        },
+        {
+            name: 'MapQuest OSM',
+            tileUrl: 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png',
+            subdomains : ['otile1','otile2','otile3','otile4'],
+            attribution : 'Data, imagery and map information provided by <a href="http://open.mapquest.com" target="_blank">MapQuest</a>, <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
+        },
+        {
+            name: 'Conveyal Tiles',
+            tileUrl: 'http://a.tiles.mapbox.com/v3/conveyal.hml987j0/{z}/{x}/{y}.png',
+            attribution: 'Data from <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors. Tiles from MapBox.</a>'
+        }
+    ],
+
 
     /**
      * Map start location and zoom settings: by default, the client uses the
@@ -111,8 +115,9 @@ otp.config = {
      * properties, when set, override that behavioir.
      */
 
-    // initLatLng : new L.LatLng(<lat>, <lng>),
-    // initZoom : 14,
+     
+    initLatLng : new L.LatLng(45.07, 7.68),
+    initZoom : 10,
     // minZoom : 10,
     // maxZoom : 20,
 
@@ -188,7 +193,6 @@ otp.config = {
          }
          
      ],
-
 
 
     //This is shown if showLanguageChooser is true
