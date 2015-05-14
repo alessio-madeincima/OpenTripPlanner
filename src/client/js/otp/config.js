@@ -102,11 +102,6 @@ otp.config = {
             attribution : 'Data, imagery and map information provided by <a href="http://open.mapquest.com" target="_blank">MapQuest</a>, <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
         },
         {
-            name: 'Mappa Rete TPL',
-            tileUrl: 'http://185.27.252.211/tilegen/{z}/{x}/{y}.png',
-            attribution : 'Lines map courtesy of <a href="http://www.öpnvkarte.de" target="_blank">ÖPNV Karte</a>. Data, imagery and map information provided by <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors. '
-        },
-        {
             name: 'Conveyal Tiles',
             tileUrl: 'http://a.tiles.mapbox.com/v3/conveyal.hml987j0/{z}/{x}/{y}.png',
             attribution: 'Data from <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors. Tiles from MapBox.</a>'
@@ -120,8 +115,8 @@ otp.config = {
      * properties, when set, override that behavioir.
      */
      
-    // initLatLng : new L.LatLng(<lat>, <lng>),
-    // initZoom : 14,
+    initLatLng : new L.LatLng(45.07, 7.68),
+    initZoom : 10,
     // minZoom : 10,
     // maxZoom : 20,
     
