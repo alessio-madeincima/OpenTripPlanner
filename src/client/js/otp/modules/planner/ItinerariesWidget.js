@@ -115,8 +115,6 @@ otp.widgets.ItinerariesWidget =
         var header;
         for(var i=0; i<this.itineraries.length; i++) {
             var itin = this.itineraries[i];
-            //$('<h3><span id='+divId+'-headerContent-'+i+'>'+this.headerContent(itin, i)+'<span></h3>').appendTo(this.itinsAccord).click(function(evt) {
-            //$('<h3>'+this.headerContent(itin, i)+'</h3>').appendTo(this.itinsAccord).click(function(evt) {
 
             var headerDivId = divId+'-headerContent-'+i;
             $('<h3><div id='+headerDivId+'></div></h3>')
@@ -273,17 +271,15 @@ otp.widgets.ItinerariesWidget =
         var timeWidth = 32;
         var startPx = 20+timeWidth, endPx = div.width()-timeWidth - (itin.groupSize ? 48 : 0);
         var pxSpan = endPx-startPx;
-        var leftPx = startPx + startPct * pxSpan;
-        var widthPx = pxSpan * (itinSpan / maxSpan);
+        var leftPx = startPx + Math.round(startPct * pxSpan);
+        var widthPx = pxSpan * Math.round(itinSpan / maxSpan);
 
         //div.append('<div style="position:absolute; width: '+(widthPx+5)+'px; height: 2px; left: '+(leftPx-2)+'px; top: 9px; background: black;" />');
 
         var timeStr = otp.util.Time.formatItinTime(itin.getStartTime(), otp.config.locale.time.time_format);
-	/*timeStr = timeStr.substring(0, timeStr.length - 1);*/
         div.append('<div class="otp-itinsAccord-header-time" style="left: '+(leftPx-32)+'px;">' + timeStr + '</div>');
 
         var timeStr = otp.util.Time.formatItinTime(itin.getEndTime(), otp.config.locale.time.time_format);
-	/*timeStr = timeStr.substring(0, timeStr.length - 1);*/
         div.append('<div class="otp-itinsAccord-header-time" style="left: '+(leftPx+widthPx+2)+'px;">' + timeStr + '</div>');
 
         for(var l=0; l<itin.itinData.legs.length; l++) {
@@ -292,8 +288,6 @@ otp.widgets.ItinerariesWidget =
             var endPct = (leg.endTime - itin.tripPlan.earliestStartTime) / maxSpan;
             var leftPx = startPx + startPct * pxSpan + 1;
             var widthPx = pxSpan * (leg.endTime - leg.startTime) / maxSpan - 1;
-
-            //div.append('<div class="otp-itinsAccord-header-segment" style="width: '+widthPx+'px; left: '+leftPx+'px; background: '+this.getModeColor(leg.mode)+' url(images/mode/'+leg.mode.toLowerCase()+'.png) center no-repeat;"></div>');
 
             var showRouteLabel = widthPx > 40 && otp.util.Itin.isTransit(leg.mode) && leg.routeShortName && leg.routeShortName.length <= 6;
             var segment = $('<div class="otp-itinsAccord-header-segment" />')
