@@ -270,28 +270,25 @@ otp.widgets.ItinerariesWidget =
         var maxSpan = itin.tripPlan.latestEndTime - itin.tripPlan.earliestStartTime;
         var startPct = (itin.itinData.startTime - itin.tripPlan.earliestStartTime) / maxSpan;
         var itinSpan = itin.getEndTime() - itin.getStartTime();
-        var timeWidth = 32;
+        var timeWidth = 38;//32;
         var startPx = 20+timeWidth, endPx = div.width()-timeWidth - (itin.groupSize ? 48 : 0);
         var pxSpan = endPx-startPx;
-        var leftPx = startPx + startPct * pxSpan;
-        var widthPx = pxSpan * (itinSpan / maxSpan);
+        var leftPx = Math.round(startPx + startPct * pxSpan);
+        var widthPx = Math.round(pxSpan * (itinSpan / maxSpan));
 
-        //div.append('<div style="position:absolute; width: '+(widthPx+5)+'px; height: 2px; left: '+(leftPx-2)+'px; top: 9px; background: black;" />');
 
         var timeStr = otp.util.Time.formatItinTime(itin.getStartTime(), otp.config.locale.time.time_format);
-	/*timeStr = timeStr.substring(0, timeStr.length - 1);*/
-        div.append('<div class="otp-itinsAccord-header-time" style="left: '+(leftPx-32)+'px;">' + timeStr + '</div>');
+        div.append('<div class="otp-itinsAccord-header-time" style="left: '+(leftPx-timeWidth/*-32*/)+'px;">' + timeStr + '</div>');
 
         var timeStr = otp.util.Time.formatItinTime(itin.getEndTime(), otp.config.locale.time.time_format);
-	/*timeStr = timeStr.substring(0, timeStr.length - 1);*/
         div.append('<div class="otp-itinsAccord-header-time" style="left: '+(leftPx+widthPx+2)+'px;">' + timeStr + '</div>');
 
         for(var l=0; l<itin.itinData.legs.length; l++) {
             var leg = itin.itinData.legs[l];
             var startPct = (leg.startTime - itin.tripPlan.earliestStartTime) / maxSpan;
             var endPct = (leg.endTime - itin.tripPlan.earliestStartTime) / maxSpan;
-            var leftPx = startPx + startPct * pxSpan + 1;
-            var widthPx = pxSpan * (leg.endTime - leg.startTime) / maxSpan - 1;
+            var leftPx = Math.round(startPx + startPct * pxSpan + 2);
+            var widthPx = Math.round(pxSpan * (leg.endTime - leg.startTime) / maxSpan - 1);
 
             //div.append('<div class="otp-itinsAccord-header-segment" style="width: '+widthPx+'px; left: '+leftPx+'px; background: '+this.getModeColor(leg.mode)+' url(images/mode/'+leg.mode.toLowerCase()+'.png) center no-repeat;"></div>');
 
@@ -376,7 +373,8 @@ otp.widgets.ItinerariesWidget =
                     //headerHtml += "("+leg.route+") ";
                     headerHtml += leg.route+" ";
                 }
-                headerHtml += "("+leg.agencyId+") ";
+                //headerHtml += "("+leg.agencyId+") ";
+                headerHtml += '(<a href="'+leg.agencyUrl + '">'+leg.agencyName+'</a>) ';
                 if (leg.routeLongName) {
                     headerHtml += leg.routeLongName;
                 }
