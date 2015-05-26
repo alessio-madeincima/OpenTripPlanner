@@ -579,7 +579,7 @@ otp.widgets.tripoptions.MaxDistanceSelector =
             //distances in Trip Options
             presets_label : _tr("Presets"),
             distSuffix: this.distSuffix,
-            currentMaxDistance: parseFloat(currentMaxDistance)
+            currentMaxDistance: parseInt(currentMaxDistance)
         }).appendTo(this.$());
 
     },
@@ -605,7 +605,7 @@ otp.widgets.tripoptions.MaxDistanceSelector =
             if (!otp.config.metric) { presetVal = otp.util.Imperial.metersToMiles(presetVal); } // Output in miles
 
             // Show the value in miles/meters
-            $('#'+this_.id+'-value').val(presetVal.toFixed(2));
+            $('#'+this_.id+'-value').val(presetVal/*.toFixed(2)*/);
             $('#'+this_.id+'-presets option:eq(0)').prop('selected', true);
         });
     },
@@ -618,7 +618,7 @@ otp.widgets.tripoptions.MaxDistanceSelector =
 
         if (!otp.config.metric) { meters = otp.util.Imperial.metersToMiles(meters); }
 
-        $('#'+this.id+'-value').val(meters.toFixed(2));
+        $('#'+this.id+'-value').val(meters/*.toFixed(2)*/);
         this.tripWidget.module.maxWalkDistance = parseFloat(data.queryParams.maxWalkDistance);
     },
 
