@@ -174,10 +174,10 @@ author: Madeincima.it
 
 .leaflet-marker-icon div{float:left;width:35px;background:#f7861b;padding:6px 0;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;border-top-right-radius:0;border-bottom-right-radius:0;    }
 .leaflet-marker-icon span{float:right;text-align:center;color:#313131;width:51px;margin-right:3px;margin-top:1px;padding:8px 0;font-size:1.3em;font-weight:normal;}
-.otp-itin-div-icon-ne div,.otp-itin-div-icon-se div{float:right;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;border-top-left-radius:0;border-bottom-left-radius:0;}
-.otp-itin-div-icon-ne span,.otp-itin-div-icon-se span{float:left;}
-.otp-itin-div-icon-sw div,.otp-itin-div-icon-se div{margin-top:22px;}
-.otp-itin-div-icon-sw span,.otp-itin-div-icon-se span{margin-top:21px;}
+.otp-itin-div-icon-ne div,.otp-itin-div-icon-ne-highlight div,.otp-itin-div-icon-se div,.otp-itin-div-icon-se-highlight div{float:right;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;border-top-left-radius:0;border-bottom-left-radius:0;}
+.otp-itin-div-icon-ne span,.otp-itin-div-icon-ne-highlight span,.otp-itin-div-icon-se span,.otp-itin-div-icon-se-highlight span{float:left;}
+.otp-itin-div-icon-sw div,.otp-itin-div-icon-sw-highlight div,.otp-itin-div-icon-se div,.otp-itin-div-icon-se-highlight div{margin-top:22px;}
+.otp-itin-div-icon-sw span,.otp-itin-div-icon-sw-highlight span,.otp-itin-div-icon-se span,.otp-itin-div-icon-se-highlight span{margin-top:21px;}
 
 
 }/* END MEDIA SCREEN*/	
