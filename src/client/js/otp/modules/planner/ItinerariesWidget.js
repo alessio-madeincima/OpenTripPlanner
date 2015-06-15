@@ -119,7 +119,7 @@ otp.widgets.ItinerariesWidget =
             //$('<h3>'+this.headerContent(itin, i)+'</h3>').appendTo(this.itinsAccord).click(function(evt) {
 
             var headerDivId = divId+'-headerContent-'+i;
-            $('<h3><div id='+headerDivId+'></div></h3>')
+            $('<h3 class="level1"><div id='+headerDivId+'></div></h3>')
             .appendTo(this.itinsAccord)
             .data('itin', itin)
             .data('index', i)
@@ -137,9 +137,33 @@ otp.widgets.ItinerariesWidget =
 
         this.itinsAccord.accordion({
             active: this.activeIndex,
-            heightStyle: "fill"
+            heightStyle: "fill",
+            collapsible:true,
+            header: ".level1"
+        })/*.sortable({
+            axis: "y",
+            items: "> .level1",
+            //handle:"h3",
+            stop: function( event, ui ) {
+              // IE doesn't register the blur when sorting
+              // so trigger focusout handlers to remove .ui-state-focus
+              //ui.item.children( "h3" ).triggerHandler( "focusout" );
+     
+              // Refresh accordion to handle new order
+              $( this ).accordion( "refresh" );
+            }
+        })*/;
+        /*
+        this.itinsAccord.on('accordionactivate', function (event, ui) {
+             // Accordion is not collapsed  planner-itinWidget-itinsAccord
+            if (ui.newPanel.length) {
+                $('#planner-itinWidget-itinsAccord').sortable('disable');
+             // Accordion is collapsed
+            } else {
+                $('#planner-itinWidget-itinsAccord').sortable('enable');
+            }
         });
-
+        */
         // headers must be rendered after accordion is laid out to work around chrome layout bug
         /*for(var i=0; i<this.itineraries.length; i++) {
             var header = $("#"+divId+'-headerContent-'+i);
@@ -262,6 +286,12 @@ otp.widgets.ItinerariesWidget =
         }
     },
 
+    lg : function(deltaInMilli) {
+        deltaMinutes = deltaInMilli/60000;
+        if (deltaMinutes<1.5) deltaMinutes=1.5;
+        return Math.log(deltaMinutes);
+    },
+    
     renderHeaderContent : function(itin, index, parentDiv) {
         parentDiv.empty();
         var div = $('<div style="position: relative; height: 20px;"></div>').appendTo(parentDiv);
@@ -413,6 +443,12 @@ otp.widgets.ItinerariesWidget =
                 active: otp.util.Itin.isTransit(leg.mode) ? 0 : false,
                 heightStyle: "content",
                 collapsible: true
+            });
+            
+            $(legDiv).find("h3 a").click(function() {
+                //window.location = $(this).attr('href');
+                window.open($(this).attr('href'), '_blank');
+                return false;
             });
         }
 
