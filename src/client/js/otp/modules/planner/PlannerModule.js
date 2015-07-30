@@ -496,7 +496,7 @@ otp.modules.planner.PlannerModule =
             // draw the polyline
             var polyline = new L.Polyline(otp.util.Geo.decodePolyline(leg.legGeometry.points));
             var weight = 8;
-            polyline.setStyle({ color : this.getModeColor(leg.mode), weight: weight});
+            polyline.setStyle({ color : this.getModeColor(leg.mode), weight: weight, opacity: 0.9});
             this.pathLayer.addLayer(polyline);
             polyline.leg = leg;
             polyline.bindPopup("("+leg.routeShortName+") "+leg.routeLongName);
@@ -603,14 +603,14 @@ otp.modules.planner.PlannerModule =
     },
 
     getModeColor : function(mode) {
-        if(mode === "WALK") return '#444';
-        if(mode === "BICYCLE") return '#0073e5';
-        if(mode === "SUBWAY") return '#f00';
-        if(mode === "RAIL") return '#b00';
-        if(mode === "BUS") return '#080';
-        if(mode === "TRAM") return '#800';
+        if(mode === "WALK") return '#97ba43';
+        if(mode === "BICYCLE") return '#f0cc3b';
+        if(mode === "SUBWAY") return '#d03939';
+        if(mode === "RAIL") return '#5a95c7';
+        if(mode === "BUS") return '#f0952a';
+        if(mode === "TRAM") return '#f0952a';
         if(mode === "CAR") return '#444';
-        return '#aaa';
+        return '#97ba43';
     },
 
     clearTrip : function() {
