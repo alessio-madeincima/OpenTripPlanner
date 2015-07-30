@@ -9,7 +9,7 @@ otp.config = {
 
     //This is default locale when wanted locale isn't found
     //Locale language is set based on wanted language in url >
-    //user cookie > language set in browser (Not accept-language) 
+    //user cookie > language set in browser (Not accept-language)
     locale: otp.locale.English,
 
     //All avalible locales
@@ -17,12 +17,12 @@ otp.config = {
     //value is name of settings file for localization in locale subfolder
     //File should be loaded in index.html
     locales : {
-        'en': otp.locale.English,
-        'de': otp.locale.German,
-        'sl': otp.locale.Slovenian,
-        'fr': otp.locale.French,
         'it': otp.locale.Italian,
-        'ca_ES': otp.locale.Catalan
+        'en': otp.locale.English,
+        'fr': otp.locale.French,
+        'de': otp.locale.German,
+        //'sl': otp.locale.Slovenian,
+        //'ca_ES': otp.locale.Catalan
     },
 
     languageChooser : function() {
@@ -40,6 +40,22 @@ otp.config = {
         return str;
     },
 
+    languageMenu : function() {
+        var active_locales = _.keys(otp.config.locales);
+        var active = '';
+        var others = '<ul>';
+        var style  = '';
+         _.each(active_locales, function(loc, i){
+             if (loc == i18n.lng()){
+                 active = '<span>' + loc + '</span>';
+                 style = 'style="display:none"';
+             }
+             else style = '';
+             others += '<li ' + style + '><a href="?setLng=' + loc+ '">' + loc + '</a></li>'
+        });
+        others += '</ul>';
+        return active + others;
+    },
 
     /**
      * The OTP web service locations
@@ -54,7 +70,7 @@ otp.config = {
 
     /**
      * Base layers: the base map tile layers available for use by all modules.
-     * Expressed as an array of objects, where each object has the following 
+     * Expressed as an array of objects, where each object has the following
      * fields:
      *   - name: <string> a unique name for this layer, used for both display
      *       and internal reference purposes
@@ -63,47 +79,42 @@ otp.config = {
      *   - attribution: <string> the attribution text for the map tile data
      *   - [subdomains]: <array of strings> a list of tileUrl subdomains, if
      *       applicable
-     *       
+     *
      */
 
     baseLayers: [
+	{
+            name: 'OSM',
+            tileUrl: 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png',
+            subdomains : ['otile1','otile2','otile3','otile4'],
+            attribution : 'Data, imagery and map information provided by <a href="http://open.mapquest.com" target="_blank">MapQuest</a>, <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
+	},
+	{
+            name: 'OSM + POI',
+            tileUrl : 'http://{s}.mz.5t.torino.it/hot/{z}/{x}/{y}.png',
+            subdomains : ['a','b','c'],
+            attribution : 'Data, imagery and map information provided by <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
+	},
         {
-            name: 'Transport Tiles',
+            name: 'Trasporti',
             tileUrl: 'http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png',
             subdomains : ['a','b','c'],
             attribution: 'Data from <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors. Tiles from <a href="http://www.thunderforest.com/transport/">Andy Allan</a>'
         },
-        {
-            name: 'MapQuest OSM',
-            tileUrl: 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png',
-            subdomains : ['otile1','otile2','otile3','otile4'],
-            attribution : 'Data, imagery and map information provided by <a href="http://open.mapquest.com" target="_blank">MapQuest</a>, <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
-        },
-        {
-            name: 'MapQuest Aerial',
-            tileUrl: 'http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png',
-            subdomains : ['otile1','otile2','otile3','otile4'],
-            attribution : 'Data, imagery and map information provided by <a href="http://open.mapquest.com" target="_blank">MapQuest</a>, <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
-        },
-        {
-            name: 'Conveyal Tiles',
-            tileUrl: 'http://a.tiles.mapbox.com/v3/conveyal.hml987j0/{z}/{x}/{y}.png',
-            attribution: 'Data from <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors. Tiles from MapBox.</a>'
-        }
     ],
-    
+
 
     /**
      * Map start location and zoom settings: by default, the client uses the
      * OTP routerInfo API call to center and zoom the map. The following
      * properties, when set, override that behavioir.
      */
-     
-    // initLatLng : new L.LatLng(<lat>, <lng>),
-    // initZoom : 14,
+
+    initLatLng : new L.LatLng(45.07, 7.68),
+    initZoom : 10,
     // minZoom : 10,
     // maxZoom : 20,
-    
+
     /* Whether the map should be moved to contain the full itinerary when a result is received. */
     zoomToFitResults    : false,
 
@@ -116,11 +127,11 @@ otp.config = {
     logoGraphic         : 'images/otp_logo_darkbg_40px.png',
     // bikeshareName    : "",
     //Enable this if you want to show frontend language chooser
-    showLanguageChooser : true,
+    showLanguageChooser : false,
 
-    showLogo            : true,
-    showTitle           : true,
-    showModuleSelector  : true,
+    showLogo            : false,
+    showTitle           : false,
+    showModuleSelector  : false,
     metric              : false,
 
 
@@ -135,21 +146,21 @@ otp.config = {
      *   - [isDefault]: <boolean> whether this module is shown by default;
      *       should only be 'true' for one module
      */
-    
+
     modules : [
         {
             id : 'planner',
             className : 'otp.modules.multimodal.MultimodalPlannerModule',
-            defaultBaseLayer : 'MapQuest OSM',
+            defaultBaseLayer : 'OSM',
             isDefault: true
-        },
+        }/*,
         {
             id : 'analyst',
             className : 'otp.modules.analyst.AnalystModule'
-        }
+        }*/
     ],
-    
-    
+
+
     /**
      * Geocoders: a list of supported geocoding services available for use in
      * address resolution. Expressed as an array of objects, where each object
@@ -161,27 +172,40 @@ otp.config = {
      *       the user-specifed address string
      */
 
-    geocoders : [
-        {
-            name: 'OTP built-in geocoder',
-            className: 'otp.core.GeocoderBuiltin'
-            // URL and query parameter do not need to be set for built-in geocoder.
-        }
-    ],
+     geocoders : [
+         {
+             'name': 'Geococker revamp',
+             'className': 'otp.core.GeocoderPelias',
+             'url': 'http://supremo:8082/suggest',
+             'addressParam': 'query',
+         }
+         ,{
+             'name': 'geococker',
+             'className': 'otp.core.Geocoder',
+             'url': 'http://bunet.5t.torino.it/otp-geocoder/geocode',
+             'addressParam': 'address'
+         }
+         ,{
+             'name': 'geocoderYP',
+             'className': 'otp.core.GeocoderYp',
+             //'url': 'http://geo.paginegialle.it/lbs',
+             'url': 'http://oltrepo.5t.torino.it/geopg/lbs',
+             'addressParam': 'dv'
+         }
+     ],
 
-    
 
     //This is shown if showLanguageChooser is true
     infoWidgetLangChooser : {
-        title: '<img src="/images/language_icon.svg" onerror="this.onerror=\'\';this.src=\'/images/language_icon.png\'" width="30px" height="30px"/>', 
+        title: '<img src="/images/language_icon.svg" onerror="this.onerror=\'\';this.src=\'/images/language_icon.png\'" width="30px" height="30px"/>',
         languages: true
     },
-    
-    
+
+
     /**
      * Support for the "AddThis" display for sharing to social media sites, etc.
      */
-     
+
     showAddThis     : false,
     //addThisPubId    : 'your-addthis-id',
     //addThisTitle    : 'Your title for AddThis sharing messages',
@@ -189,8 +213,8 @@ otp.config = {
 
     /**
      * Formats to use for date and time displays, expressed as ISO-8601 strings.
-     */    
-     
+     */
+
     timeFormat  : "h:mma",
     dateFormat  : "MMM Do YYYY"
 
@@ -209,6 +233,7 @@ var options = {
 	debug: true,
 	getAsync: false, //TODO: make async
 	fallbackOnEmpty: true,
+    load: 'unspecific',
 };
 var _tr = null; //key
 var ngettext = null; // singular, plural, value
@@ -225,7 +250,7 @@ i18n.init(options, function(t) {
         otp.config.locale = otp.config.locales[i18n.lng()];
         otp.config.metric = otp.config.locale.config.metric;
         //Conditionally load datepicker-lang.js?
-    } 
+    }
 
     //Use infoWidgets from locale
     //Default locale is English which has infoWidgets
@@ -250,7 +275,7 @@ i18n.init(options, function(t) {
         //Only key
         if (arg_length == 1) {
             key = arguments[0];
-            return t(key); 
+            return t(key);
         //key with sprintf values
         } else if (arg_length > 1) {
             key = arguments[0];
@@ -258,7 +283,7 @@ i18n.init(options, function(t) {
             for(var i = 1; i < arg_length; i++) {
                 values.push(arguments[i]);
             }
-            return t(key, {postProcess: 'sprintf', sprintf: values}); 
+            return t(key, {postProcess: 'sprintf', sprintf: values});
         } else {
             console.error("_tr function doesn't have an argument");
             return "";
@@ -282,13 +307,13 @@ i18n.init(options, function(t) {
 otp.config.modes = {
     //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
     //Options widgets)
-        "TRANSIT,WALK"        : _tr("Transit"), 
+        "TRANSIT,WALK"        : _tr("Transit"),
     //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
     //Options widgets)
-        "BUSISH,WALK"         : _tr("Bus Only"), 
+        "BUSISH,WALK"         : _tr("Bus Only"),
     //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
     //Options widgets)
-        "TRAINISH,WALK"       : _tr("Rail Only"), 
+        "TRAINISH,WALK"       : _tr("Rail Only"),
     //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
     //Options widgets)
         "BICYCLE"             : _tr('Bicycle Only'),
