@@ -54,12 +54,26 @@ otp.locale.English = {
     infoWidgets : [
             {
                 title: 'About',
-                content: '<p>About this site</p>',
+                content: '<p>Pronto TPL trip planner service is the new infomobility tool to plan your trip in the region using public transport (urban and extra-urban bus and tram, train services), by pedestrian paths or by car.</p>\
+						  <br/><br/>\
+						  <p>The service is an experimental project promoted by <a href="http://www.regione.piemonte.it/trasporti/">Piemonte Region government</a> and powered by <a href="http://www.5t.torino.it/">5T</a> in cooperation with regional local governments and public transport operators.</p>\
+						  <br/><br/>\
+						  <p>Pronto TPL trip planner service uses open source technologies, broadly consolidated as <a href="https://www.openstreetmap.org/">OpenStreetMap</a> and <a href="http://www.opentripplanner.org/">OpenTripPlanner</a>, and is based on scheduled times provided by regional local governments and public transport operators included in the <a href="http://bip.piemonte.it/">regional ticketing system BIP (Biglietto Integrato Piemonte)</a>.</p>',
                 //cssClass: 'otp-contactWidget',
             },
             {
                 title: 'Contact',
-                content: '<p>Comments? Contact us at...</p>'
+                content: '<p>Pronto TPL trip planner service is an experimental project and constantly updated.</p>\
+						  <br></br>\
+						  <p>For any errors and anomalies or suggestions to improve the services, you can contact us:</p>\
+						  <p>- by email: <a href="mailto:prontotpl@5t.torino.it">prontotpl@5t.torino.it</a> </p>\
+						  <p>- by phone: 800333444 - Piemonte Region Toll free number</p>\
+						  <br></br>\
+						  <p><b>DISCLAIMER</b></p>\
+						  <br/><br/>\
+						  <p>Pronto TPL trip planner service uses OpenStreetMap (OSM) as cartographic basis, a collaborative project to create a free editable map of the world, constantly updated, so the map may not be entirely complete. Related to adresses’ identification, the systems may produce errors or inaccuracies.</p>\
+						  <br/><br/>\
+						  <p>Please note that public transport data (as locating stops, timetables and routes) are provided by the regional local governments and public transport operators and are generally updated quarterly. In case of missed update, some localities could not be reached by public transport services.</p>'
             },
     ],
 
