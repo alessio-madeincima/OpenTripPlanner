@@ -18,21 +18,21 @@ var resourcePath = otp.config.resourcePath || "";
 
 var StartFlagIcon = L.Icon.extend({
     options: {
-        iconUrl: resourcePath + 'images/marker-flag-start-shadowed.png',
+        iconUrl: resourcePath + 'images/5t/marker-flag-start-'+ i18n.lng() +'.png',
         shadowUrl: null,
-        iconSize: new L.Point(48, 49),
-        iconAnchor: new L.Point(46, 42),
-        popupAnchor: new L.Point(0, -16)
+        iconSize: new L.Point(87, 48),
+        iconAnchor: new L.Point(43, 48),
+        popupAnchor: new L.Point(0, -48)
     }
 });
 
 var EndFlagIcon = L.Icon.extend({
     options: {
-        iconUrl: resourcePath + 'images/marker-flag-end-shadowed.png',
+        iconUrl: resourcePath + 'images/5t/marker-flag-end-'+ i18n.lng() +'.png',
         shadowUrl: null,
-        iconSize: new L.Point(48, 49),
-        iconAnchor: new L.Point(46, 42),
-        popupAnchor: new L.Point(0, -16)
+        iconSize: new L.Point(87, 48),
+        iconAnchor: new L.Point(43, 48),
+        popupAnchor: new L.Point(0, -48)
     }
 });
 
@@ -313,23 +313,23 @@ otp.modules.planner.IconFactory = otp.Class({
         mode = mode.toLowerCase();
         highlight = highlight || false;
         var html = '<div class="otp-itin-div-icon-topRow-'+quadrant[0]+'">';
-        if(!isOrigin) html += '<img src="'+otp.config.resourcePath+'images/mode/arrow.png" style="margin-right:2px;">';
-        html += '<img src="'+otp.config.resourcePath+'images/mode/'+mode+'.png">';
-        if(isOrigin) html += '<img src="'+otp.config.resourcePath+'images/mode/arrow.png" style="margin-left:2px;">';
+        //if(!isOrigin) html += '<img src="'+otp.config.resourcePath+'images/mode/arrow.png" style="margin-right:2px;">';
+        html += '<img src="'+otp.config.resourcePath+'images/5t/mode/'+mode+'.png">';
+        //if(isOrigin) html += '<img src="'+otp.config.resourcePath+'images/mode/arrow.png" style="margin-left:2px;">';
         html += '</div>';
         //Removes AM/PM at the end of time if it exists (Time is too long
         //otherwise)
         var time_format = (otp.config.locale.time.time_format.slice(-1) === 'a') ? otp.config.locale.time.time_format.slice(0, -1) : otp.config.locale.time.time_format;
-        html +=  otp.util.Time.formatItinTime(time, time_format);
+        html +=  '<span>' + otp.util.Time.formatItinTime(time, time_format) + '</span>';
         
-        if(quadrant === 'nw') anchor = [32,44];
-        if(quadrant === 'ne') anchor = [0,44];
-        if(quadrant === 'sw') anchor = [32,0];
-        if(quadrant === 'se') anchor = [0,0];
+        if(quadrant === 'nw') anchor = [89,52];//[32,44];
+        if(quadrant === 'ne') anchor = [0,52];//[0,44];
+        if(quadrant === 'sw') anchor = [89,0];//[32,0];
+        if(quadrant === 'se') anchor = [0,0];//[0,0];
 
         return L.divIcon({
             className: 'otp-itin-div-icon '+'otp-itin-div-icon-'+quadrant+(highlight ? "-highlight" : ""),
-            iconSize: [32,44],
+            iconSize: [89,52],
             iconAnchor: anchor,
             html: html 
         });
