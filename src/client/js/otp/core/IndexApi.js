@@ -106,6 +106,7 @@ otp.core.IndexApi = otp.Class({
         // load more details about route
         var url = otp.config.hostname + '/' + otp.config.restService + '/index/routes/' + agencyAndId ;
         $.ajax(url, {
+            async: false,
             success: function(data){
                 // index api does not return the mode yet...
                 routeMode = route.routeData.mode;
@@ -223,7 +224,12 @@ otp.core.IndexApi = otp.Class({
             dataType: "text",
             success: function(data) {
                 callback.call(callbackTarget, data);
-            }
+            },
+            error: function(xhr) {
+                //if no stop found, pass an empty array of stops...
+                if(xhr.status == '404')
+                    callback.call(callbackTarget, []);
+            },
         });
     },
 
