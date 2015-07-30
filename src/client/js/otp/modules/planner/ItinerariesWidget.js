@@ -328,10 +328,11 @@ otp.widgets.ItinerariesWidget =
                 width: widthPx,
                 left: leftPx,
                 //background: this.getModeColor(leg.mode)
-                background: this.getModeColor(leg.mode)+' url('+otp.config.resourcePath+'images/5t/mode/'+leg.mode.toLowerCase()+'.png) center no-repeat'
+                background: this.getModeColor(leg.mode)+' url('+otp.config.resourcePath+'images/5t/mode/'+leg.mode.toLowerCase()+'.png) 30% 50% no-repeat'
             })
             .appendTo(div);
-            if(showRouteLabel) segment.append('<div style="margin-left:'+(widthPx/2+9)+'px;">'+leg.routeShortName+'</div>');
+            //if(showRouteLabel) segment.append('<div style="margin-left:'+(widthPx/2+9)+'px;" title="'+ leg.routeShortName +'">'+leg.routeShortName+'</div>');
+            if(showRouteLabel) segment.append('<div style="margin-left:45%;" title="'+ leg.routeShortName +'">'+leg.routeShortName+'</div>');
 
         }
 
