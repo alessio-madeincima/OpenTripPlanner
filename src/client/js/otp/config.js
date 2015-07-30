@@ -19,8 +19,8 @@ otp.config = {
     locales : {
         'it': otp.locale.Italian,
         'en': otp.locale.English,
-        'fr': otp.locale.French,
-        'de': otp.locale.German,
+        //'fr': otp.locale.French,
+        //'de': otp.locale.German,
         //'sl': otp.locale.Slovenian,
         //'ca_ES': otp.locale.Catalan
     },
@@ -179,7 +179,7 @@ otp.config = {
              'url': 'http://supremo:8082/suggest',
              'addressParam': 'query',
          }
-         ,{
+        /* ,{
              'name': 'geococker',
              'className': 'otp.core.Geocoder',
              'url': 'http://bunet.5t.torino.it/otp-geocoder/geocode',
@@ -191,7 +191,7 @@ otp.config = {
              //'url': 'http://geo.paginegialle.it/lbs',
              'url': 'http://oltrepo.5t.torino.it/geopg/lbs',
              'addressParam': 'dv'
-         }
+         }*/
      ],
 
 
@@ -310,16 +310,16 @@ otp.config.modes = {
         "TRANSIT,WALK"        : _tr("Transit"),
     //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
     //Options widgets)
-        "BUSISH,WALK"         : _tr("Bus Only"),
+    //    "BUSISH,WALK"         : _tr("Bus Only"),
     //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
     //Options widgets)
-        "TRAINISH,WALK"       : _tr("Rail Only"),
+    //    "TRAINISH,WALK"       : _tr("Rail Only"),
     //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
     //Options widgets)
-        "BICYCLE"             : _tr('Bicycle Only'),
+    //    "BICYCLE"             : _tr('Bicycle Only'),
     //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
     //Options widgets)
-        "TRANSIT,BICYCLE"     : _tr("Bicycle &amp; Transit"),
+    //    "TRANSIT,BICYCLE"     : _tr("Bicycle &amp; Transit"),
     //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
     //Options widgets)
         "WALK"                : _tr('Walk Only'),
@@ -328,14 +328,14 @@ otp.config.modes = {
         "CAR"                 : _tr('Drive Only'),
     //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
     //Options widgets)
-    "CAR_PARK,WALK,TRANSIT"     : _tr('Park and Ride'),
+    //"CAR_PARK,WALK,TRANSIT"     : _tr('Park and Ride'),
     //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
     //Options widgets) http://en.wikipedia.org/wiki/Park_and_ride#Kiss_and_ride
-    "CAR,WALK,TRANSIT"          : _tr('Kiss and Ride'),
+    //"CAR,WALK,TRANSIT"          : _tr('Kiss and Ride'),
     //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
     //Options widgets) (Park bicycle at Public transit station and take a
     //transit
-    "BICYCLE_PARK,WALK,TRANSIT" : _tr('Bike and Ride'),
+    //"BICYCLE_PARK,WALK,TRANSIT" : _tr('Bike and Ride'),
     //uncomment only if bike rental exists in a map
     // TODO: remove this hack, and provide code that allows the mode array to be configured with different transit modes.
     //       (note that we've been broken for awhile here, since many agencies don't have a 'Train' mode either...this needs attention)
