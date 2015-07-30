@@ -23,7 +23,7 @@ otp.modules.planner.defaultQueryParams = {
     wheelchair                      : false,
     mode                            : "TRANSIT,WALK",
     maxWalkDistance                 : 804.672, // 1/2 mi.
-    metricDefaultMaxWalkDistance    : 5000, // meters
+    metricDefaultMaxWalkDistance    : 2000, // meters
     imperialDefaultMaxWalkDistance  : 804.672, // 0.5 mile
     preferredRoutes                 : null,
     otherThanPreferredRoutesPenalty : 300,
