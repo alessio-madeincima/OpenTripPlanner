@@ -350,6 +350,7 @@ otp.widgets.ItinerariesWidget =
         if(mode === "RAIL") return '#5a95c7';
         if(mode === "BUS") return '#f0952a';
         if(mode === "TRAM") return '#f0952a';
+        if(mode === "CAR") return '#444';
         return '#97ba43';
     },
 
