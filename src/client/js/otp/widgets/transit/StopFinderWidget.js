@@ -58,9 +58,10 @@ otp.widgets.transit.StopFinderWidget =
 
         this.agencySelect = this.mainDiv.find('.otp-stopFinder-agencySelect');
         this.module.webapp.indexApi.loadAgencies(this, function() {
-            for(var agencyId in this.module.webapp.indexApi.agencies) {
-                $("<option />").html(agencyId).appendTo(this_.agencySelect);
-            }
+            _.each(_.sortBy(this.module.webapp.indexApi.agencies, function(anAgency){return[anAgency.agencyData.name]}
+                            ), function(agency){
+                                $("<option />").html(agency.agencyData.name).appendTo(this_.agencySelect);
+            });
         });
 
         this.stopList = this.mainDiv.find('.otp-stopFinder-stopList');
