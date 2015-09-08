@@ -344,7 +344,7 @@ otp.modules.planner.PlannerModule =
                 if(this.otherThanPreferredRoutesPenalty !== null)
                     queryParams.otherThanPreferredRoutesPenalty = this.otherThanPreferredRoutesPenalty;
             }
-            if(this.bannedRoutes !== null) _.extend(queryParams, { bannedRoutes : this.bannedRoutes } );
+            if(this.bannedRoutes) _.extend(queryParams, { bannedRoutes : this.bannedRoutes } );
             if(this.bannedTrips !== null) _.extend(queryParams, { bannedTrips : this.bannedTrips } );
             if(this.optimize !== null) _.extend(queryParams, { optimize : this.optimize } );
             if(this.optimize === 'TRIANGLE') {

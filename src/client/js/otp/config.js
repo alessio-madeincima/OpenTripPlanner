@@ -60,7 +60,7 @@ otp.config = {
     /**
      * The OTP web service locations
      */
-    hostname : "",
+    hostname : "http://prontotpl.5t.torino.it",
     //municoderHostname : "http://localhost:8080",
     //datastoreUrl : 'http://localhost:9000',
     // In the 0.10.x API the base path is "otp-rest-servlet/ws"
@@ -84,19 +84,19 @@ otp.config = {
 
     baseLayers: [
 	{
-            name: 'OSM',
+            name: 'Mappa',
             tileUrl: 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png',
             subdomains : ['otile1','otile2','otile3','otile4'],
             attribution : 'Data, imagery and map information provided by <a href="http://open.mapquest.com" target="_blank">MapQuest</a>, <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
 	},
 	{
-            name: 'OSM + POI',
+            name: 'Punti d\'interesse',
             tileUrl : 'http://{s}.mz.5t.torino.it/hot/{z}/{x}/{y}.png',
             subdomains : ['a','b','c'],
             attribution : 'Data, imagery and map information provided by <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
 	},
         {
-            name: 'Trasporti',
+            name: 'Rete Trasporti',
             tileUrl: 'http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png',
             subdomains : ['a','b','c'],
             attribution: 'Data from <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors. Tiles from <a href="http://www.thunderforest.com/transport/">Andy Allan</a>'
@@ -122,7 +122,7 @@ otp.config = {
      * Site name / description / branding display options
      */
 
-    siteName            : "My OTP Instance",
+    siteName            : "Pronto TPL",
     siteDescription     : "An OpenTripPlanner deployment.",
     logoGraphic         : 'images/otp_logo_darkbg_40px.png',
     // bikeshareName    : "",
@@ -151,7 +151,7 @@ otp.config = {
         {
             id : 'planner',
             className : 'otp.modules.multimodal.MultimodalPlannerModule',
-            defaultBaseLayer : 'OSM',
+            defaultBaseLayer : 'Mappa',
             isDefault: true
         }/*,
         {
