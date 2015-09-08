@@ -239,10 +239,11 @@ otp.modules.planner.Itinerary = otp.Class({
             var leg = this.itinData.legs[l];
 
             // header
-            html += '<h4>'+(l+1)+'. '+otp.util.Itin.modeString(leg.mode).toUpperCase();//
+            html += '<p>'+(l+1)+'. '+otp.util.Itin.modeString(leg.mode).toUpperCase();//
             if(otp.util.Itin.isTransit(leg.mode)) {
-                html += ': ';
-                if(leg.route !== leg.routeLongName) html += "("+leg.route+") ";
+                html += ' ';
+                if(leg.route !== leg.routeLongName) html += "<b>" + leg.route+" </b>";
+                html += "("+leg.agencyId+") ";
                 html += leg.routeLongName;
                 if(leg.headsign) html +=  pgettext("bus_direction", " to ") + leg.headsign;
             }
@@ -250,18 +251,18 @@ otp.modules.planner.Itinerary = otp.Class({
                 //TRANSLATORS: [distance] to [name of destination]
                 html += " "+otp.util.Itin.distanceString(leg.distance)+ pgettext("direction", " to ")+otp.util.Itin.getName(leg.to);
             }
-            html += '</h4>'
+            html += '</p>'
             
             // main content
             if(otp.util.Itin.isTransit(leg.mode)) { // transit
                 html += '<ul>';
                 //TRANSLATORS: Board Public transit route name (agency name
                 //Stop ID ) start time
-                html += '<li><b>' + _tr('Board') + '</b>: ' + leg.from.name + ' ' + _tr("(%(agency_id)s Stop ID #%(stop_id)s),", {'agency_id': leg.from.stopId.split(':')[0], 'stop_id': leg.from.stopId.split(':')[1] }) + ' ' + otp.util.Time.formatItinTime(leg.startTime, otp.config.locale.time.time_format) + '</li>';
+                html += '<li><b>' + _tr('Board') + '</b>: ' + leg.from.name + ' ' /*+ _tr("(%(agency_id)s Stop ID #%(stop_id)s),", {'agency_id': leg.from.stopId.split(':')[0], 'stop_id': leg.from.stopId.split(':')[1] })*/ + ' - ' + otp.util.Time.formatItinTime(leg.startTime, otp.config.locale.time.time_format) + '</li>';
                 html += '<li><i>' + _tr('Time in transit') +': '+otp.util.Time.secsToHrMin(leg.duration)+'</i></li>';
                 //TRANSLATORS: Alight Public transit route name (agency name
                 //Stop ID ) end time
-                html += '<li><b>' + _tr('Alight') + '</b>: ' + leg.to.name + ' ' + _tr("(%(agency_id)s Stop ID #%(stop_id)s),", {'agency_id': leg.to.stopId.split(':')[0], 'stop_id': leg.to.stopId.split(':')[1] }) + ' ' + otp.util.Time.formatItinTime(leg.endTime, otp.config.locale.time.time_format) + '</li>';
+                html += '<li><b>' + _tr('Alight') + '</b>: ' + leg.to.name + ' ' /*+ _tr("(%(agency_id)s Stop ID #%(stop_id)s),", {'agency_id': leg.to.stopId.split(':')[0], 'stop_id': leg.to.stopId.split(':')[1] })*/ + ' - ' + otp.util.Time.formatItinTime(leg.endTime, otp.config.locale.time.time_format) + '</li>';
                 
                 html += '</ul>';
             }
@@ -274,7 +275,7 @@ otp.modules.planner.Itinerary = otp.Class({
                     html += '<div class="otp-itin-print-step" style="margin-top: .5em;">';
                     html += '<div class="otp-itin-step-icon">';
                     if(step.relativeDirection)
-                        html += '<img src="images/directions/' +
+                        html += '<img src="images/5t/directions/' +
                             step.relativeDirection.toLowerCase()+'.png">';
                     html += '</div>';                
                     var dist = otp.util.Itin.distanceString(step.distance);

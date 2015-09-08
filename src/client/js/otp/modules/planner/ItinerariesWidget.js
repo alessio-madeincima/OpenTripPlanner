@@ -30,7 +30,7 @@ otp.widgets.ItinerariesWidget =
     showButtonRow : true,
     showItineraryLink : true,
     showPrintLink : true,
-    showEmailLink : true,
+    showEmailLink : false,
     showSearchLink : false,
 
 
@@ -399,7 +399,7 @@ otp.widgets.ItinerariesWidget =
             }
             else if(leg.agencyId !== null) {
                 //headerHtml += ": "+leg.agencyId+", ";
-                headerHtml += ": ";
+                headerHtml += " ";
                 if(leg.route !== leg.routeLongName) {
                     //headerHtml += "("+leg.route+") ";
                     headerHtml += leg.route+" ";
@@ -599,9 +599,9 @@ otp.widgets.ItinerariesWidget =
             });
 
             var stopHtml = '<div class="otp-itin-leg-endpointDescSub">';
-            if( typeof leg.from.stopCode != 'undefined' ) {
+            /*if( typeof leg.from.stopCode != 'undefined' ) {
                 stopHtml += _tr("Stop") + ' #'+leg.from.stopCode+ ' ';
-            }
+            }*/
             stopHtml += '[<a href="#">' + _tr("Stop Viewer") +'</a>]</div>';
 
             $(stopHtml)
