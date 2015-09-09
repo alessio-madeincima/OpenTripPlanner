@@ -60,7 +60,7 @@ otp.config = {
     /**
      * The OTP web service locations
      */
-    hostname : "http://prontotpl.5t.torino.it",
+    hostname : "",
     //municoderHostname : "http://localhost:8080",
     //datastoreUrl : 'http://localhost:9000',
     // In the 0.10.x API the base path is "otp-rest-servlet/ws"
@@ -176,7 +176,7 @@ otp.config = {
          {
              'name': 'Geococker revamp',
              'className': 'otp.core.GeocoderPelias',
-             'url': 'http://supremo:8082/suggest',
+             'url': 'http://prontotpl.5t.torino.it/suggest',
              'addressParam': 'query',
          }
         /* ,{
