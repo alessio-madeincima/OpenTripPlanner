@@ -95,12 +95,45 @@ otp.config = {
             subdomains : ['a','b','c'],
             attribution : 'Data, imagery and map information provided by <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
 	},
-        {
+    {
             name: 'Rete Trasporti',
             tileUrl: 'http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png',
             subdomains : ['a','b','c'],
             attribution: 'Data from <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors. Tiles from <a href="http://www.thunderforest.com/transport/">Andy Allan</a>'
-        },
+    },
+    {
+            name: 'Roby\'s',
+            tileUrl: 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png',
+            subdomains : ['a','b','c'],
+            attribution: 'Data from <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors. Tiles from <a href="http://maps.wikimedia.org">maps.wikimedia.org</a>'
+    },
+    {
+            name: 'Bunet like',
+            tileUrl: 'http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
+            subdomains : ['a','b','c'],
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>'
+    },
+    {
+            name: 'Grigione',
+            tileUrl: 'http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png',
+            subdomains : ['a','b','c'],
+            attribution: 'Data from <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
+    },
+    {
+            name: 'Grigino',
+            tileUrl: 'http://openmapsurfer.uni-hd.de/tiles/roadsg/x={x}&y={y}&z={z}',
+            subdomains : ['a','b','c'],
+            attribution: 'Imagery from <a href="http://giscience.uni-hd.de/">GIScience Research Group @ University of Heidelberg</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    },
+
+    {
+            name: 'MapBox',
+            tileUrl: 'https://{s}.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZ3V0ZW55ZSIsImEiOiJmNjJlMDNmYTUyMzNjMzQxZmY4Mzc1ZmFiYmExNjMxOSJ9.xgl1PBwQV9CtwW-usedrcQ',
+            subdomains : ['a','b','c'],
+            attribution: 'Imagery from <a href="http://mapbox.com/about/maps/">MapBox</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    },
+
+
     ],
 
 
