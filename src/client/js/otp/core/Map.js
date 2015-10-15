@@ -94,9 +94,7 @@ otp.core.Map = otp.Class({
                                         format: 'image/png',
                                         transparent: true,
                                         version: '1.1.0',
-                                        attribution: "myattribution",
-                                        //configuration: "optima",
-                                        //uppercase : false
+                                        //attribution: "myattribution",
                                         }) , 'traffico');
       
         if(!otp.config.initLatLng) {

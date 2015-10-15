@@ -60,13 +60,13 @@ otp.config = {
     /**
      * The OTP web service locations
      */
-    hostname : "",
+    hostname : "http://oltrepo",
     //municoderHostname : "http://localhost:8080",
     //datastoreUrl : 'http://localhost:9000',
     // In the 0.10.x API the base path is "otp-rest-servlet/ws"
     // From 0.11.x onward the routerId is a required part of the base path.
     // If using a servlet container, the OTP WAR should be deployed to context path /otp
-    restService: "otp/routers/default",
+    restService: "otp/routers/mip",
 
     /**
      * Base layers: the base map tile layers available for use by all modules.
@@ -185,12 +185,18 @@ otp.config = {
             id : 'planner',
             className : 'otp.modules.multimodal.MultimodalPlannerModule',
             defaultBaseLayer : 'Mappa',
-            isDefault: true
-        }/*,
-        {
+            //isDefault: true
+        },
+        /*{
             id : 'analyst',
             className : 'otp.modules.analyst.AnalystModule'
-        }*/
+        },*/
+         {	
+            id : 'bikeshare',
+            className : 'otp.modules.bikeshare.BikeShareModule',
+            defaultBaseLayer : 'Grigione',
+            isDefault: true
+        }
     ],
 
 
@@ -349,7 +355,7 @@ otp.config.modes = {
     //    "TRAINISH,WALK"       : _tr("Rail Only"),
     //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
     //Options widgets)
-    //    "BICYCLE"             : _tr('Bicycle Only'),
+        "BICYCLE"             : _tr('Bicycle Only'),
     //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
     //Options widgets)
     //    "TRANSIT,BICYCLE"     : _tr("Bicycle &amp; Transit"),
@@ -361,22 +367,22 @@ otp.config.modes = {
         "CAR"                 : _tr('Drive Only'),
     //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
     //Options widgets)
-    //"CAR_PARK,WALK,TRANSIT"     : _tr('Park and Ride'),
+    "CAR_PARK,WALK,TRANSIT"     : _tr('Park and Ride'),
     //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
     //Options widgets) http://en.wikipedia.org/wiki/Park_and_ride#Kiss_and_ride
-    //"CAR,WALK,TRANSIT"          : _tr('Kiss and Ride'),
+    "CAR,WALK,TRANSIT"          : _tr('Kiss and Ride'),
     //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
     //Options widgets) (Park bicycle at Public transit station and take a
     //transit
-    //"BICYCLE_PARK,WALK,TRANSIT" : _tr('Bike and Ride'),
+    "BICYCLE_PARK,WALK,TRANSIT" : _tr('Bike and Ride'),
     //uncomment only if bike rental exists in a map
     // TODO: remove this hack, and provide code that allows the mode array to be configured with different transit modes.
     //       (note that we've been broken for awhile here, since many agencies don't have a 'Train' mode either...this needs attention)
     // IDEA: maybe we start with a big array (like below), and the pull out modes from this array when turning off various modes...
     //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
     //Options widgets)
-    //    'WALK,BICYCLE_RENT'        :_tr('Rented Bicycle'),
+        'WALK,BICYCLE_RENT'        :_tr('Rented Bicycle'),
     //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
     //Options widgets)
-    //    'TRANSIT,WALK,BICYCLE_RENT': _tr('Transit & Rented Bicycle')
+        'TRANSIT,WALK,BICYCLE_RENT': _tr('Transit & Rented Bicycle')
     };

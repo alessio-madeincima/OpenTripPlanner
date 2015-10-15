@@ -36,6 +36,10 @@ otp.widgets.BikeTrianglePanel = new otp.Class({
     flatBar     : null,
     safeBar     : null,
 
+    quickBarBck    : null,
+    flatBarBck     : null,
+    safeBarBck     : null,
+
     quickLabel  : null,
     flatLabel   : null,
     safeLabel   : null,
@@ -74,30 +78,33 @@ otp.widgets.BikeTrianglePanel = new otp.Class({
 
         var bg = canvas.rect(0,0,width,height).attr({
               stroke: 'none',
-              fill: '#eee'
+              fill: '#fff'
           });
 
         var triangle = canvas.path(["M",margin+tri_side/2,margin,"L",margin+tri_side,height-margin,"L",margin,height-margin,"z"]);
 
 
-        triangle.attr({fill:"#ddd", stroke:"none"});
+        triangle.attr({fill:"#fafafa", stroke:"#ddd"});
         
         var labelSize = "18px";
 
-        var safeFill = "#bbe070"; 
-        var safeFill2 = "#77b300"; 
+        var safeFill = "#e0eac7"; //"#bbe070"; 
+        var safeFill2 = "#7ba908"; //"#77b300"; 
         //TRANSLATORS: First letter of Bike Friendly
         var safeSym  = _tr("B"); 
 
-        var flatFill = "#8cc4ff"; 
-        var flatFill2 = "#61a7f2"; 
+        var flatFill = "#cce6f3"; //"#8cc4ff"; 
+        var flatFill2 = "#3293c6"; //"#61a7f2"; 
         //TRANSLATORS: First letter of Flat
         var flatSym  = _tr("F"); //locale.bikeTriangle.flatSym;
         
-        var quickFill = "#ffb2b2";
-        var quickFill2 = "#f27979";
+        var quickFill = "#f9c6c5";//"#ffb2b2";
+        var quickFill2 = "#b50200";//"#f27979";
         //TRANSLATORS: First letter of Quick
         var quickSym  = _tr("Q"); //locale.bikeTriangle.quickSym;
+
+        var backFill = "#fbfbfb";
+        var backStroke = "#ebebeb";
 
         var labelT = canvas.text(margin + tri_side/2, margin+24, quickSym);
         labelT.attr({fill:quickFill2, "font-size":labelSize, "font-weight":"bold"});	
@@ -113,23 +120,29 @@ otp.widgets.BikeTrianglePanel = new otp.Class({
         var barWidth = this.barWidth;
         var barHeight = (height-margin*4)/3;
 
+        this.quickBarBck = canvas.rect(barLeft, margin, barWidth, barHeight);
+        this.quickBarBck.attr({fill:backFill, stroke:backStroke});
         this.quickBar = canvas.rect(barLeft, margin, barWidth*.333, barHeight);
         this.quickBar.attr({fill:quickFill, stroke:"none"});
 
+        this.flatBarBck = canvas.rect(barLeft, margin*2+barHeight, barWidth, barHeight);
+        this.flatBarBck.attr({fill:backFill, stroke:backStroke});
         this.flatBar = canvas.rect(barLeft, margin*2+barHeight, barWidth*.333, barHeight);
         this.flatBar.attr({fill:flatFill, stroke:"none"});
 
+        this.safeBarBck = canvas.rect(barLeft, margin*3 + barHeight*2, barWidth, barHeight);
+        this.safeBarBck.attr({fill:backFill, stroke:backStroke});
         this.safeBar = canvas.rect(barLeft, margin*3 + barHeight*2, barWidth*.333, barHeight);
         this.safeBar.attr({fill:safeFill, stroke:"none"});
 
-        this.quickLabel = canvas.text(barLeft + barWidth/2, margin+barHeight/2, this.quickName + ": 33%");
-        this.quickLabel.attr({"font-size":"13px", opacity:1});
+        this.quickLabel = canvas.text(barLeft + 6 /*barWidth/2*/, margin+barHeight/2, this.quickName + ": 33%");
+        this.quickLabel.attr({"font-size":"13px", "fill":"#b50200","font-weight":"bold","text-anchor":"start", opacity:1});
 
-        this.flatLabel = canvas.text(barLeft + barWidth/2, margin*2+barHeight+barHeight/2,  this.flatName + ": 33%");
-        this.flatLabel.attr({"font-size":"13px", opacity:1});
+        this.flatLabel = canvas.text(barLeft + 6, margin*2+barHeight+barHeight/2,  this.flatName + ": 33%");
+        this.flatLabel.attr({"font-size":"13px", "fill":"#3293c6","font-weight":"bold","text-anchor":"start", opacity:1});
 
-        this.safeLabel = canvas.text(barLeft + barWidth/2, margin*3+barHeight*2+barHeight/2, this.safeName + ": 33%");
-        this.safeLabel.attr({"font-size":"13px", opacity:1});
+        this.safeLabel = canvas.text(barLeft + 6, margin*3+barHeight*2+barHeight/2, this.safeName + ": 33%");
+        this.safeLabel.attr({"font-size":"13px", "fill":"#7ba908", "font-weight":"bold","text-anchor":"start", opacity:1});
 
         var cx = margin+tri_side/2, cy = height-margin-(1/Math.sqrt(3))*(tri_side/2);
         this.cursorVert = canvas.rect(cx-.5, cy-this.cursor_size/2-2, 1, this.cursor_size+4).attr({

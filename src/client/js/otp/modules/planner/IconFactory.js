@@ -39,7 +39,7 @@ var EndFlagIcon = L.Icon.extend({
 
 var StartBikeIcon = L.Icon.extend({
     options: {
-        iconUrl: resourcePath + 'images/marker-bike-green-shadowed.png',
+        iconUrl: resourcePath + 'images/5t/bike/pick-up-bike.png',
         shadowUrl: null,
         iconSize: new L.Point(25, 39),
         iconAnchor: new L.Point(12, 36),
@@ -49,7 +49,7 @@ var StartBikeIcon = L.Icon.extend({
 
 var EndBikeIcon = L.Icon.extend({
     options: {
-        iconUrl: resourcePath + 'images/marker-bike-red-shadowed.png',
+        iconUrl: resourcePath + 'images/5t/bike/drop-off-bike.png',
         shadowUrl: null,
         iconSize: new L.Point(25, 39),
         iconAnchor: new L.Point(12, 36),
@@ -91,51 +91,51 @@ var BlueNubIcon = L.Icon.extend({
 
 var SmallIcon0Pct = L.Icon.extend({
     options: {
-        iconUrl: resourcePath + 'images/marker-sm-0pct.png',
+        iconUrl: resourcePath + 'images/5t/bike/marker-med-0pct.png',
         shadowUrl: null,
-        iconSize: new L.Point(11, 8),
-        iconAnchor: new L.Point(5, 8),
-        popupAnchor: new L.Point(0, -8)
+        iconSize: new L.Point(18, 28),
+        iconAnchor: new L.Point(9, 28),
+        popupAnchor: new L.Point(0, -28)
     }
 });
 
 var SmallIcon25Pct = L.Icon.extend({
     options: {
-        iconUrl: resourcePath + 'images/marker-sm-25pct.png',
+        iconUrl: resourcePath + 'images/5t/bike/marker-med-25pct.png',
         shadowUrl: null,
-        iconSize: new L.Point(11, 8),
-        iconAnchor: new L.Point(5, 8),
-        popupAnchor: new L.Point(0, -8)
+        iconSize: new L.Point(18, 28),
+        iconAnchor: new L.Point(9, 28),
+        popupAnchor: new L.Point(0, -28)
     }
 });
 
 var SmallIcon50Pct = L.Icon.extend({
     options: {
-        iconUrl: resourcePath + 'images/marker-sm-50pct.png',
+        iconUrl: resourcePath + 'images/5t/bike/marker-med-50pct.png',
         shadowUrl: null,
-        iconSize: new L.Point(11, 8),
-        iconAnchor: new L.Point(5, 8),
-        popupAnchor: new L.Point(0, -8)
+        iconSize: new L.Point(18, 28),
+        iconAnchor: new L.Point(9, 28),
+        popupAnchor: new L.Point(0, -28)
     }
 });
 
 var SmallIcon75Pct = L.Icon.extend({
     options: {
-        iconUrl: resourcePath + 'images/marker-sm-75pct.png',
+        iconUrl: resourcePath + 'images/5t/bike/marker-med-75pct.png',
         shadowUrl: null,
-        iconSize: new L.Point(11, 8),
-        iconAnchor: new L.Point(5, 8),
-        popupAnchor: new L.Point(0, -8)
+        iconSize: new L.Point(18, 28),
+        iconAnchor: new L.Point(9, 28),
+        popupAnchor: new L.Point(0, -28)
     }
 });
 
 var SmallIcon100Pct = L.Icon.extend({
     options: {
-        iconUrl: resourcePath + 'images/marker-sm-100pct.png',
+        iconUrl: resourcePath + 'images/5t/bike/marker-med-100pct.png',
         shadowUrl: null,
-        iconSize: new L.Point(11, 8),
-        iconAnchor: new L.Point(5, 8),
-        popupAnchor: new L.Point(0, -8)
+        iconSize: new L.Point(18, 28),
+        iconAnchor: new L.Point(9, 28),
+        popupAnchor: new L.Point(0, -28)
     }
 });
 
