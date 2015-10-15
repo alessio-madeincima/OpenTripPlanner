@@ -86,9 +86,9 @@ author: Madeincima.it
     .otp-widget-header-buttons div:first-child div{display:none;}
     .otp-widget-header-button{margin-left:4px;font-weight:normal;}
 
-    #otp-planner-optionsWidget-locSelector-reverseButton{background: #fff url(images/5t/arrow-revert-fields.gif) -27px 0 no-repeat;cursor: pointer;display: block;height:25px;width:20px;border:0;position:absolute;top:27%;left:90%;}
-    #otp-planner-optionsWidget-locSelector-reverseButton:hover{background-position:0 0;}
-    #otp-planner-optionsWidget-locSelector-reverseButton img{display:none;}
+    .otp-tripOptions-loc-reverseBtn{background: #fff url(images/5t/arrow-revert-fields.gif) -27px 0 no-repeat;cursor: pointer;display: block;height:25px;width:20px;border:0;position:absolute;top:27%;left:90%;}
+    .otp-tripOptions-loc-reverseBtn:hover{background-position:0 0;}
+    .otp-tripOptions-loc-reverseBtn img{display:none;}
 
     #otp-planner-optionsWidget-submit-button,.otp-stopViewer-findButton{background:#fb9922;font-family:arial,sans-serif;border:0;margin-top:1.5em;color:#fff;font-weight:600;text-transform:uppercase;font-size:1em;text-shadow:-1px -1px 0 rgba(0,0,0,0.1);padding:2px 4px;float:right;}
     #otp-planner-optionsWidget-submit-button:hover{opacity:.9;}
@@ -111,6 +111,8 @@ author: Madeincima.it
     #otp-planner-optionsWidget-modeSelector{margin-left:10px;width:80%;max-width:255px;}
     .otp-minimized-tab{background:#fff;border:#fff;text-transform:uppercase;color:#1f4168;padding:9px 10px;font-size:1em;text-align:center;}
 
+/*bikeTriangle*/
+.otp-bikeTriangle{background:#fff;}
 
 
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default{background:#fafafa;}
@@ -185,6 +187,34 @@ author: Madeincima.it
 
 
 .ui-accordion a,.ui-accordion .ui-state-active a,.ui-accordion .ui-state-default a{color:#e16c12;}
+
+
+/* leaflet popup */
+.leaflet-popup-content {margin:10px 23px 8px 12px;}
+.leaflet-popup-content-wrapper{border-radius:3px;}
+.station{margin-bottom:4px}
+.station span{color:#1f4168}
+
+/*bike staion widget*/
+#bikeshare-stationsWidget{bottom:68px;right:19px;width:190px}
+.otp-bikeshare-stationsWidget-left,
+.otp-bikeshare-stationsWidget-right{box-shadow:0 0 4px -2px #000;background:#f8f8f8;padding:0;border:0;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px}
+#pickup_btn,
+#dropoff_btn{position:relative;padding:11px 10px 5px 51px}
+#pickup_btn{margin-bottom:11px}
+#pickup_btn .icon,
+#dropoff_btn .icon{position:absolute;width:39px;height:100%;display:block;top:0;left:0;bottom:0}
+#pickup_btn h5,
+#dropoff_btn h5{font-size:1.08em;text-transform:uppercase;color:#373737;margin-bottom:6px}
+#pickup_btn h5 span{color:#6a9308}
+#dropoff_btn h5 span{color:#c20606}
+#pickup_btn p,
+#dropoff_btn p{font-size:1em;color:#373737;margin-bottom:3px;line-height:120%}
+#pickup_btn .icon{background:#7cab0e url(images/5t/bike/pick-up.gif) center center no-repeat}
+#dropoff_btn .icon{background:#d90e0e url(images/5t/bike/drop-off.gif) center center no-repeat}
+
+
+
 
 
 }/* END MEDIA SCREEN*/	

@@ -51,8 +51,11 @@ otp.modules.bikeshare.StationCollection =
     },
     
     parse: function(rawData, options) {
-        return Backbone.Collection.prototype.parse.call(this, rawData.stations, options);
+        return _.filter(rawData.stations, function(station){
+                return station.bikesAvailable != 0 ||  station.spacesAvailable != 0 ;
+        });
     }
+
 });
 
 otp.modules.bikeshare.Utils = {
@@ -84,7 +87,9 @@ otp.modules.bikeshare.BikeShareModule =
         this.mode = "WALK,BICYCLE_RENT";
         
         this.stationsLayer = new L.LayerGroup();
-        this.addLayer("Bike Stations", this.stationsLayer);
+        //raf aagiungo il layer in funzione del livello di zoom
+        //this.addLayer("Bike Stations", this.stationsLayer);
+        this.webapp.map.lmap.on('dragend zoomend', $.proxy(this.refresh, this));
         
         this.bikestationsWidget = new otp.widgets.BikeStationsWidget(this.id+"-stationsWidget", this);
 
@@ -93,14 +98,13 @@ otp.modules.bikeshare.BikeShareModule =
         var this_ = this;
         setInterval(function() {
             this_.reloadStations();
-        }, 30000);
+        }, 300000);//raf *10
         
         
         this.initOptionsWidget();
         
         this.defaultQueryParams.mode = "WALK,BICYCLE_RENT";
         this.optionsWidget.applyQueryParams(this.defaultQueryParams);
-                
        
     },
     
@@ -162,9 +166,16 @@ otp.modules.bikeshare.BikeShareModule =
                         
         this.drawItinerary(itin);
         
-        if(tripPlan.queryParams.mode === 'WALK,BICYCLE_RENT') { // bikeshare trip
-            var polyline = new L.Polyline(otp.util.Geo.decodePolyline(itin.itinData.legs[1].legGeometry.points));
-            var start_and_end_stations = this.processStations(polyline.getLatLngs()[0], polyline.getLatLngs()[polyline.getLatLngs().length-1]);
+        if(tripPlan.queryParams.mode === 'WALK,BICYCLE_RENT'  &&   itin.itinData.legs.length > 1  ) { // bikeshare trip   && not only foot leg
+            var rentedBikeLegs= _.filter(itin.itinData.legs, function(leg){
+                    return leg.rentedBike;
+            });
+            var stationFrom = rentedBikeLegs[0].from;
+            stationFrom.lng = stationFrom.lon;//add lng property as subsequent functions read that
+            var stationTo = rentedBikeLegs[rentedBikeLegs.length-1].to;
+            stationTo.lng = stationTo.lon;
+            var start_and_end_stations = this.processStations(stationFrom,stationTo );
+
         }
         else { // "my own bike" trip
            	this.resetStationMarkers();
@@ -201,6 +212,7 @@ otp.modules.bikeshare.BikeShareModule =
         
         this.stations.each(function(station) {
             var stationData = station.toJSON();
+            //console.log(stationData.name, stationData.bikesAvailable, stationData.spacesAvailable);
             
             if (station.isWalkableFrom(start, tol)) {
                 // start station
@@ -209,29 +221,29 @@ otp.modules.bikeshare.BikeShareModule =
                 this.setStationMarker(station, _tr("PICK UP BIKE"), this.icons.startBike);
                 start_and_end_stations['start'] = station;
             }
-            else if (station.isNearishTo(this.startLatLng, distTol)) {
+            /*else if (station.isNearishTo(this.startLatLng, distTol)) {
                 // start-adjacent station
                 var distanceToStart = station.distanceTo(this.startLatLng);
                 var icon = distanceToStart < distTol/2 ? this.icons.getLarge(stationData) : this.icons.getMedium(stationData);
                 // TRANSLATORS: Popup title alternative station to pickup bike on bike
                 // sharing
                 this.setStationMarker(station, _tr("ALTERNATE PICKUP"), icon);
-            }
+            }*/
             else if (station.isWalkableFrom(end, tol)) {
                 // end station
                 // TRANSLATORS: Popup title 
                 this.setStationMarker(station, _tr("DROP OFF BIKE"), this.icons.endBike);
                 start_and_end_stations['end'] = station;
-            }
+            }/*
             else if (station.isNearishTo(this.endLatLng, distTol)) {
                 // end-adjacent station
                 var distanceToEnd = station.distanceTo(this.endLatLng);
                 var icon = distanceToEnd < distTol/2 ? this.icons.getLarge(stationData) : this.icons.getMedium(stationData);
                 // TRANSLATORS: Popup title
                 this.setStationMarker(station, _tr("ALTERNATE DROP OFF"), icon);
-            }
+            }*/
             else {
-                icon = icon || this.icons.getSmall(stationData);
+                icon =  this.icons.getSmall(stationData);
                 // TRANSLATORS: Popup title Bike sharing station
                 this.setStationMarker(station, _tr("BIKE STATION"), icon);
             }
@@ -311,7 +323,7 @@ otp.modules.bikeshare.BikeShareModule =
     },
             
     constructStationInfo : function(title, station) {
-        if(title == null) {
+        /*if(title == null) {
             title = (station.markerTitle !== undefined) ? station.markerTitle : _tr("BIKE STATION");
         }
         var info = "<strong>"+title+"</strong><br/>";
@@ -320,7 +332,37 @@ otp.modules.bikeshare.BikeShareModule =
         info += '<strong>' + _tr("Station:") + '</strong> '+station.name+'<br/>';
         info += ngettext("<strong>%d</strong> bike available", "<strong>%d</strong> bikes available", station.bikesAvailable) + "<br />";
         info += ngettext("<strong>%d</strong> dock available", "<strong>%d</strong> docks available", station.spacesAvailable) + '<br />';
+        */
+        name=station.name.toUpperCase();
+    	header0 = name.indexOf(' ')>0 ? name.substring(0,name.indexOf(' ')+1):name;
+    	header1 = name.indexOf(' ')>0 ? name.substring(name.indexOf(' ')):'';
+    	
+    	info = '<h5 class="station"><span>'+header0+'</span>'+header1+'</h5>';
+        
+    	//info += '<strong>'+station.bikesAvailable + otp.config.locale.widgets.BikeStationsWidget.bikes_available + ' / ';
+        //info += station.spacesAvailable + otp.config.locale.widgets.BikeStationsWidget.docks_available + '</strong>'+otp.config.locale.widgets.BikeStationsWidget.available;
+        info += "<b>"+ngettext("%d bike", "%d bike_plural", station.bikesAvailable) + '</b> / ';
+        info += ngettext("<strong>%d</strong> dock available", "<strong>%d</strong> docks available", station.spacesAvailable);
         return info;
+    },
+    //refresh station markers based on zoom level
+    refresh : function() {
+    	var lmap = this.webapp.map.lmap;
+    	 if( lmap.getZoom() < 12   && lmap.hasLayer(this.stationsLayer)  ){
+              lmap.removeLayer(this.stationsLayer);
+    		 console.log('togli stazioni');
+    	 }
+    	 if(lmap.getZoom() >= 12   &&  lmap.getZoom() < 16 && !lmap.hasLayer(this.stationsLayer)){
+    		 lmap.addLayer(this.stationsLayer);
+    		/* this.stations.each(function(station) {
+    			 setStationMarker(station, 'no-title', this.icons.getMedium(stationData));
+    		 });*/
+    		 
+    		 console.log('metti stazioni piccole');
+    	 }
+    	 if(lmap.getZoom() >= 16  ){
+    		 console.log('icone grandi');
+    	 }
     },
                 
     CLASS_NAME : "otp.modules.bikeshare.BikeShareModule"

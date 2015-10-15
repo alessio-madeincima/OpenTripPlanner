@@ -43,7 +43,20 @@ otp.widgets.BikeStationsWidget =
 		// Fit station names to widget:
 		start.name = start.name.length > 50 ? start.name.substring(0,50) + "..." : start.name;
 		end.name = end.name.length > 50 ? end.name.substring(0,50) + "..." : end.name;
-		
+
+		$("#bikeshare-stationsWidget").empty();
+                
+                ich['otp-pick_drop_btn']({
+                    widgetId : this.id,
+                    //bikeWidget: otp.config.locale.widgets.BikeStationsWidget,
+					pickUp:    _tr("Recommended Pick Up:"),
+					dropOff:   _tr("Recommended Drop Off:"),
+                    startName: start.name,
+                    endName  : end.name,
+                    bikesNr  : ngettext("<strong>%d</strong> bike available", "<strong>%d</strong> bikes available", start.bikesAvailable),
+                    spaceNr  : ngettext("<strong>%d</strong> dock available", "<strong>%d</strong> docks available", end.spacesAvailable)
+             }).appendTo(this.$());
+/*
 		// Swap existing button name or create new button:
 		if (this.start_button !== null) {
 			this.start_button.empty();
@@ -74,16 +87,16 @@ otp.widgets.BikeStationsWidget =
         			.append($("<div class='otp-bikeshare-stationsWidget-right'></div>").append(this.end_button));  
 		    this.show();
 		}
-		
+*/		
         var start_marker = module.getStationMarker(startStation);
         var end_marker = module.getStationMarker(endStation);
 
-        this.start_button.click(function(e) {
+        $("#pickup_btn").click(function(e) {
         	e.preventDefault();
         	start_marker.openPopup();
         });
 
-        this.end_button.click(function(e) {
+        $("#dropoff_btn").click(function(e) {
         	e.preventDefault();
         	end_marker.openPopup();
         });
