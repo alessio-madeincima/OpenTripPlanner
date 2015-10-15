@@ -45,20 +45,20 @@ author: Madeincima.it
     /* ----------- STRUCTURE --------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
 
-    #branding{box-shadow: 0 0 10px -6px #000;height: 64px;background: #29547c}
+    #branding{box-shadow: 0 0 10px -6px #000;height: 64px;background: #80af10 ;}
 
-    #logo{position:relative;display:block;margin:0px;width:177px;height:54px}
-        #logo h1{width:290px;height:64px;text-indent:-9999px;font-size:0;line-height:0;background:url(images/5t/logo-pronto-tpl.gif) 0 0 no-repeat}
+    #logo{position:relative;display:block;margin:0px;_width:68px;height:64px;  background: url(images/5t/logo-bunet.gif)0 0 no-repeat    }
+        #logo #site-title{margin:0; margin-left: 72px; padding:0;font-size: 2.5em;line-height:64px;font-weight: normal;background:#80af10;}
 
     .partner{display:none;}
     .main-menu-container{display:none;font-size:0.9em;}
 
-    .language-switcher{float:left;margin-left:8px;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;text-transform:uppercase;background:#3e6a94;overflow:hidden;}
+    .language-switcher{float:left;margin-left:8px;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;text-transform:uppercase;;background:#9bc635;border:1px solid #a6cd49;overflow:hidden;}
         .language-switcher span, .language-switcher a{text-align:right;width:25px;padding-right:22px;cursor:pointer;height:28px;display:block;font-weight:bold;font-size:1.08em;line-height:28px;color:#fff}
         .language-switcher a{display:none}
         .language-switcher span a{display:block}
         .language-switcher:hover a{display:block}
-        .language-switcher a:hover{background:#5580a9}
+        .language-switcher a:hover{background:#96c032;border-color:#a0c742}
         /*.language-switcher span .fonticon:before{display:inline-block;content:"\e800";font-size:16px;color:#fff;padding:0;position:absolute;top:1px;right:8px;} */
 
     #map{top:64px}
@@ -229,10 +229,11 @@ author: Madeincima.it
 
 @media only screen and (min-width:30em){ 
     
-    .partner{width:150px;height:64px;position:absolute;top:0;right:0;background:url(images/5t/bg-loghi.png) 0 0 no-repeat;padding-left:50px;display:block;}
-    .partner a{background-position:0 0;background-repeat:no-repeat;display:block;text-indent:-9999px;line-height:0;font-size:0;margin-top:10px;}
+    .partner{width:300px;height:64px;position:absolute;top:0;right:0;background:url(images/5t/bg-loghi.png) 0 0 no-repeat;padding-left:50px;display:block;}
+    .partner a{_position: relative; background-position:0 0;background-repeat:no-repeat;display:block;text-indent:-9999px;line-height:0;font-size:0;margin-top:10px;margin-right: 20px;}
     .partner a.first{margin-left:15px;}
-    .partner .logo-1{top:20px;right:128px;width:119px;height:44px;background-image:url(images/5t/logo-regione-piemonte.gif)}
+    .partner .logo-1{float:right; top:20px;right:128px;width:144px;height:44px;background-image:url(images/5t/logo-citta-torino.gif)}
+    .partner .logo-2{float:right; top:20px;right:10px;width:95px;height:44px;background-image:url(images/5t/logo-torino-metropoli.png)}
     .partner a:hover{opacity:0.9}
     .partner-aux{background:#fff;width:100%;height:100%;float:left;}
     
@@ -243,14 +244,14 @@ author: Madeincima.it
 
 @media only screen and (min-width:55em){ 
     
-    .main-menu-container{position:absolute;top:18px;right:228px;float:right;display:block;}
+    .main-menu-container{position:absolute;top:18px;right:360px;float:right;display:block;}
     
     .main-menu-5t{float:left}
     .main-menu-5t li{float:left;margin-left:8px}
     .main-menu-5t li.first{margin-left:0}
-    .main-menu-5t a{font-weight:bold;font-family:'Roboto',sans-serif;font-size:1.08em;line-height:28px;height:28px;padding:0 13px;display:block;background:#3e6a94;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;color:#fff;text-transform:uppercase}
-    .main-menu-5t a:hover{background:#fe9b25}
-    .main-menu-5t .active a{background:#fe9b25}
+    .main-menu-5t a{font-weight:bold;font-family:'Roboto',sans-serif;font-size:1.08em;line-height:28px;height:28px;padding:0 13px;display:block;background:#9bc635;border:1px solid #a6cd49;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;color:#fff;text-transform:uppercase}
+    .main-menu-5t a:hover{background:#96c032;border-color:#a0c742}
+    .main-menu-5t .active a{background:#96c032;border-color:#a0c742}
     
     
 }
