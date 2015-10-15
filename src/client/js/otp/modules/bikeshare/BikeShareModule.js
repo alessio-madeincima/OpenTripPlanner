@@ -72,6 +72,9 @@ otp.modules.bikeshare.BikeShareModule =
     moduleName  : _tr("Bike Share Planner"),
 
     resultsWidget   : null,
+    //raf aggiungo l'itinWidget riportandolo dal Multimodal planner...(nei metodi processPlan() e clearTRip() 
+    itinWidget  : null,
+
     
     stations    : null,    
     stationLookup :   { },
@@ -163,7 +166,19 @@ otp.modules.bikeshare.BikeShareModule =
             }
             this.resultsWidget.show();
         }*/
-                        
+      //raf vedi itinWidget
+        if(this.itinWidget == null) {
+            this.itinWidget = new otp.widgets.ItinerariesWidget(this.id+"-itinWidget", this);
+        }
+        if(restoring && this.restoredItinIndex) {
+            this.itinWidget.show();
+            this.itinWidget.updateItineraries(tripPlan.itineraries, tripPlan.queryParams, this.restoredItinIndex);
+            this.restoredItinIndex = null;
+        } else  {
+            this.itinWidget.show();
+            this.itinWidget.updateItineraries(tripPlan.itineraries, tripPlan.queryParams);
+        }
+                                
         this.drawItinerary(itin);
         
         if(tripPlan.queryParams.mode === 'WALK,BICYCLE_RENT'  &&   itin.itinData.legs.length > 1  ) { // bikeshare trip   && not only foot leg
