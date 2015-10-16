@@ -544,6 +544,7 @@ otp.widgets.ItinerariesWidget =
         tripSummaryFooter.append(_tr('Valid') + ' ' + moment().format(otp.config.locale.time.format));
 
         var itinLink = this.constructLink(itin.tripPlan.queryParams, { itinIndex : index });
+        console.log(itinLink);
         if(this.showItineraryLink) {
             //TRANSLATORS: Links to this itinerary
             tripSummaryFooter.append(' | <a href="'+itinLink+'">' + _tr("Link to Itinerary") + '</a>');
@@ -793,6 +794,8 @@ otp.widgets.ItinerariesWidget =
     },
 
     constructLink : function(queryParams, additionalParams) {
+        //raf reformat date as locale, while speak iso 8601 with server
+        queryParams.date = moment(queryParams.date).format(otp.config.locale.time.date_format); 
         additionalParams = additionalParams ||  { };
         return otp.config.siteUrl + '?module=' + this.module.id + "&" +
             otp.util.Text.constructUrlParamString(_.extend(_.clone(queryParams), additionalParams));
