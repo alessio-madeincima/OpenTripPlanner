@@ -27,7 +27,7 @@ otp.widgets.ItinerariesWidget =
 
     // set to true by next/previous/etc. to indicate to only refresh the currently active itinerary
     refreshActiveOnly : false,
-    showButtonRow : true,
+    showButtonRow : false,
     showItineraryLink : true,
     showPrintLink : true,
     showEmailLink : false,
@@ -42,7 +42,7 @@ otp.widgets.ItinerariesWidget =
             title : _tr("Itineraries"),
             cssClass : module.itinerariesWidgetCssClass || 'otp-defaultItinsWidget',
             resizable : true,
-            closeable : true,
+            closeable : false,
             persistOnClose : true
         });
         //this.$().addClass('otp-itinsWidget');
@@ -95,7 +95,7 @@ otp.widgets.ItinerariesWidget =
 
         this.clear();
         //TRANSLATORS: widget title
-        this.setTitle(ngettext("%d Itinerary Returned", "%d Itineraries Returned", this.itineraries.length));
+        this.setTitle(ngettext("%d Itinerary Returned", "%d Itineraries Returned", this.itineraries.length) + '<span class="top-total"></span>');
 
         var html = "<div id='"+divId+"' class='otp-itinsAccord'></div>";
         this.itinsAccord = $(html).appendTo(this.$());
@@ -119,7 +119,7 @@ otp.widgets.ItinerariesWidget =
             //$('<h3>'+this.headerContent(itin, i)+'</h3>').appendTo(this.itinsAccord).click(function(evt) {
 
             var headerDivId = divId+'-headerContent-'+i;
-            $('<h3 class="level1"><div id='+headerDivId+'></div></h3>')
+            $('<h3 class="level1"><div class="visual-bar" id='+headerDivId+'></div></h3>')
             .appendTo(this.itinsAccord)
             .data('itin', itin)
             .data('index', i)
@@ -134,46 +134,25 @@ otp.widgets.ItinerariesWidget =
             .append(this.renderItinerary(itin, i));
         }
         this.activeIndex = parseInt(itinIndex) || 0;
+/*raf tolgo accordion su itinerari perchè ce n'è uno solo
 
         this.itinsAccord.accordion({
             active: this.activeIndex,
             heightStyle: "fill",
             collapsible:true,
             header: ".level1"
-        })/*.sortable({
-            axis: "y",
-            items: "> .level1",
-            //handle:"h3",
-            stop: function( event, ui ) {
-              // IE doesn't register the blur when sorting
-              // so trigger focusout handlers to remove .ui-state-focus
-              //ui.item.children( "h3" ).triggerHandler( "focusout" );
-     
-              // Refresh accordion to handle new order
-              $( this ).accordion( "refresh" );
-            }
-        })*/;
-        /*
-        this.itinsAccord.on('accordionactivate', function (event, ui) {
-             // Accordion is not collapsed  planner-itinWidget-itinsAccord
-            if (ui.newPanel.length) {
-                $('#planner-itinWidget-itinsAccord').sortable('disable');
-             // Accordion is collapsed
-            } else {
-                $('#planner-itinWidget-itinsAccord').sortable('enable');
-            }
-        });
-        */
+        })
+
         // headers must be rendered after accordion is laid out to work around chrome layout bug
         /*for(var i=0; i<this.itineraries.length; i++) {
             var header = $("#"+divId+'-headerContent-'+i);
             this.renderHeaderContent(itineraries[i], i, header);
         }*/
         this.renderHeaders();
-        this_.itinsAccord.accordion("resize");
+        //this_.itinsAccord.accordion("resize");
 
         this.$().resize(function(){
-            this_.itinsAccord.accordion("resize");
+            //this_.itinsAccord.accordion("resize");
             this_.renderHeaders();
         });
 
@@ -285,33 +264,27 @@ otp.widgets.ItinerariesWidget =
             this.renderHeaderContent(this.itineraries[i], i, header);
         }
     },
-
-    lg : function(deltaInMilli) {
-        deltaMinutes = deltaInMilli/60000;
-        if (deltaMinutes<1.5) deltaMinutes=1.5;
-        return Math.log(deltaMinutes);
-    },
     
     renderHeaderContent : function(itin, index, parentDiv) {
         parentDiv.empty();
         var div = $('<div style="position: relative; height: 20px;"></div>').appendTo(parentDiv);
-        div.append('<div class="otp-itinsAccord-header-number">'+(index+1)+'.</div>');
+        //r div.append('<div class="otp-itinsAccord-header-number">'+(index+1)+'.</div>');
 
         var maxSpan = itin.tripPlan.latestEndTime - itin.tripPlan.earliestStartTime;
         var startPct = (itin.itinData.startTime - itin.tripPlan.earliestStartTime) / maxSpan;
         var itinSpan = itin.getEndTime() - itin.getStartTime();
-        var timeWidth = 38;//32;
-        var startPx = 20+timeWidth, endPx = div.width()-timeWidth - (itin.groupSize ? 48 : 0);
+        var timeWidth = 0;//32;
+        var startPx = -1+timeWidth, endPx = div.width()-timeWidth - (itin.groupSize ? 48 : 0);
         var pxSpan = endPx-startPx;
         var leftPx = Math.round(startPx + startPct * pxSpan);
         var widthPx = Math.round(pxSpan * (itinSpan / maxSpan));
 
 
         var timeStr = otp.util.Time.formatItinTime(itin.getStartTime(), otp.config.locale.time.time_format);
-        div.append('<div class="otp-itinsAccord-header-time" style="left: '+(leftPx-timeWidth/*-32*/)+'px;">' + timeStr + '</div>');
+        //r div.append('<div class="otp-itinsAccord-header-time" style="left: '+(leftPx-timeWidth/*-32*/)+'px;">' + timeStr + '</div>');
 
         var timeStr = otp.util.Time.formatItinTime(itin.getEndTime(), otp.config.locale.time.time_format);
-        div.append('<div class="otp-itinsAccord-header-time" style="left: '+(leftPx+widthPx+2)+'px;">' + timeStr + '</div>');
+        //r div.append('<div class="otp-itinsAccord-header-time" style="left: '+(leftPx+widthPx+2)+'px;">' + timeStr + '</div>');
 
         for(var l=0; l<itin.itinData.legs.length; l++) {
             var leg = itin.itinData.legs[l];
@@ -323,13 +296,15 @@ otp.widgets.ItinerariesWidget =
             //div.append('<div class="otp-itinsAccord-header-segment" style="width: '+widthPx+'px; left: '+leftPx+'px; background: '+this.getModeColor(leg.mode)+' url(images/mode/'+leg.mode.toLowerCase()+'.png) center no-repeat;"></div>');
 
             var showRouteLabel = widthPx > 40 && otp.util.Itin.isTransit(leg.mode) && leg.routeShortName && leg.routeShortName.length <= 6;
-            var segment = $('<div class="otp-itinsAccord-header-segment" />')
+            //var segment = $('<div class="otp-itinsAccord-header-segment" />')
+            var segment = $('<div><span class="duration">' + Math.round(leg.duration/60) +'\'</span><span class="vis-icon"></span></div>')
             .css({
                 width: widthPx,
                 left: leftPx,
                 //background: this.getModeColor(leg.mode)
-                background: this.getModeColor(leg.mode)+' url('+otp.config.resourcePath+'images/5t/mode/'+leg.mode.toLowerCase()+'.png) 30% 50% no-repeat'
+                //background: this.getModeColor(leg.mode)+' url('+otp.config.resourcePath+'images/5t/mode/'+leg.mode.toLowerCase()+'.png) 30% 50% no-repeat'
             })
+            .addClass("part "+leg.mode.toLowerCase())
             .appendTo(div);
             //if(showRouteLabel) segment.append('<div style="margin-left:'+(widthPx/2+9)+'px;" title="'+ leg.routeShortName +'">'+leg.routeShortName+'</div>');
             if(showRouteLabel) segment.append('<div style="margin-left:45%;" title="'+ leg.routeShortName +'">'+leg.routeShortName+'</div>');
@@ -344,14 +319,13 @@ otp.widgets.ItinerariesWidget =
     },
 
     getModeColor : function(mode) {
-        if(mode === "WALK") return '#97ba43';
-        if(mode === "BICYCLE") return '#f0cc3b';
-        if(mode === "SUBWAY") return '#d03939';
-        if(mode === "RAIL") return '#5a95c7';
-        if(mode === "BUS") return '#f0952a';
-        if(mode === "TRAM") return '#f0952a';
-        if(mode === "CAR") return '#444';
-        return '#97ba43';
+        if(mode === "WALK") return '#bbb';
+        if(mode === "BICYCLE") return '#44f';
+        if(mode === "SUBWAY") return '#f00';
+        if(mode === "RAIL") return '#b00';
+        if(mode === "BUS") return '#0f0';
+        if(mode === "TRAM") return '#f00';
+        return '#aaa';
     },
 
 
@@ -363,7 +337,8 @@ otp.widgets.ItinerariesWidget =
 
         // render legs
         var divId = this.module.id+"-itinAccord-"+index;
-        var accordHtml = "<div id='"+divId+"' class='otp-itinAccord'></div>";
+        // r var accordHtml = "<div id='"+divId+"' class='otp-itinAccord'></div>";
+        var accordHtml = "<ul id='"+divId+"' class='otp-itinAccord part-list'></ul>";
         var itinAccord = $(accordHtml);
         for(var l=0; l<itin.itinData.legs.length; l++) {
 

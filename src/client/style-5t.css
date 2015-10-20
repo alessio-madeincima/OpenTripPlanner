@@ -213,7 +213,59 @@ author: Madeincima.it
 #pickup_btn .icon{background:#7cab0e url(images/5t/bike/pick-up.gif) center center no-repeat}
 #dropoff_btn .icon{background:#d90e0e url(images/5t/bike/drop-off.gif) center center no-repeat}
 
+/* itinerary widget */
 
+#bikeshare-itinWidget-itinsAccord{width:100%;height:75%}
+
+
+.otp-itinAlertRow {float:left; background: none; color:#c00; font-size:1em;}
+#bikeshare-itinWidget-itinsAccord-0{width:100%; float:left; position:absolute; top:50px;bottom:20px; left:5px;height:auto; overflow-y:scroll }
+#bikeshare-itinWidget-itinsAccord-0>div{width:100%; float:left}
+
+
+
+.visual-bar{margin-bottom:12px;overflow:hidden;height:32px;width:100%;float:left;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px}
+	.visual-bar .part{_position:relative;font-weight:500;font-size:1.08em;font-family:roboto,sans-serif; text-shadow:none;padding-top:14px;height:18px;
+						_float:left;margin-right:3px;color:#fff;text-align:right;_padding-right:5px;_padding-left:32px;
+						position:absolute;top:0;overflow:hidden;}
+	.visual-bar .part.last{margin-right:0}
+	.visual-bar .walk{background:#373737}
+	.visual-bar .bicycle{background:#80af10}
+	.visual-bar .part span.vis-icon{display:block;position:absolute;background-repeat:no-repeat;background-image:url(images/5t/bike/sprites.png)}
+	.visual-bar .walk span.vis-icon{top:5px;left:10px;width:13px;height:22px;background-position:0 -19px}
+	.visual-bar .bicycle span.vis-icon{top:7px;left:7px;width:20px;height:19px;background-position:0 0}
+	.visual-bar .part .duration {position:absolute; bottom:5px; right:5px; width:auto;top:auto}
+
+
+
+.otp-itinsAccord .box-scrollable{position:relative;width:385px;float:left;max-height:202px;overflow:hidden}
+
+.otp-itinsAccord .part-list{width:100%;float:left}
+ .otp-itinsAccord .part-list li{float:left;width:100%;}
+ .otp-itinsAccord .part-list li.last{margin-bottom:0; border-bottom:0}
+ .otp-itinsAccord .part-list h3{/*width:297px*/;line-height:14px;position:relative;cursor:pointer;padding:8px 28px 8px 38px;font-size:1.08em;font-family:roboto,sans-serif;background:#fbfbfb;border:1px solid #ededed;color:#262626;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px}
+ .otp-itinsAccord .part-list h3:hover{background:#f7f7f7}
+ .otp-itinsAccord .part-list h3 .arrow{width:10px;height:5px;display:block;position:absolute;top:13px;right:10px;background:url(../img/arrow-list-state.png) 0 -5px no-repeat}
+ .otp-itinsAccord .part-list .open h3 .arrow{background-position:0 0}
+ .otp-itinsAccord .part-list .open h3{color:#678f09;background:#f1f5e7;border-color:#d9eab0}
+ .otp-itinsAccord .part-list .open h3:hover{background:#ecf1e1}
+ .otp-itinsAccord .part-list h3 b{height:14px;line-height:14px;font-size:0.92em;float:left;width:48px;font-weight:bold;text-transform:uppercase;margin-right:8px}
+ .otp-itinsAccord .part-list h3 .icon{position:absolute;background-image:url(images/5t/bike/sprites.png)}
+ .otp-itinsAccord .part-list .walk h3 .icon{top:4px;left:13px;width:12px;height:22px;background-position:-13px -19px}
+ .otp-itinsAccord .part-list .walk.open h3 .icon{background-position:-25px -19px}
+ .otp-itinsAccord .part-list .bicycle h3 .icon{top:5px;left:8px;width:20px;height:19px;background-position:-20px 0}
+ .otp-itinsAccord .part-list .bicycle.open h3 .icon{background-position:-40px 0}
+ 
+ .otp-itinsAccord{float:left;padding-top:7px;position:relative;width:100%}
+	.box-close .otp-itinsAccord{display:none}
+	
+	 .otp-itinsAccord .field{float:left;_width:100%;height:32px;margin-bottom:11px}
+	 .otp-itinsAccord .field label{margin-right:8px;text-align:right;cursor:pointer;line-height:32px;width:18px;float:left;text-transform:uppercase;font-weight:bold;font-size:1em;color:#373737}
+	 .otp-itinsAccord .field input{box-shadow:inset 0 0 10px -4px #e3e3e3;color:#151515;font-family:arial,helvetica,sans-serif;font-size:1em;margin:0;padding:0 9px;width:204px;height:30px;background:#fbfbfb;border:1px solid #ebebeb}
+	
+	 .otp-itinsAccord .revert-fields{position:absolute;top:6px;left:266px;background:url(../img/arrow-revert-fields.gif) -18px 28px no-repeat;cursor:pointer;display:block;width:30px;height:77px}
+	 .otp-itinsAccord .revert-fields:hover{background-position:9px 28px}
+	
 
 
 

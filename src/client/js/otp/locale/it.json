@@ -45,7 +45,7 @@
     "Recommended Drop Off:": "Lascia la bici:",
     "Multimodal Trip Planner": "Calcolo percorso multimodale",
     "Itineraries": "Percorsi",
-    "%d Itinerary Returned": "%d percorso trovato",
+    "%d Itinerary Returned": "percorso <span>suggerito</span>",
     "%d Itinerary Returned_plural": "%d percorsi trovati",
     "Link to search": "Link a questa ricerca",
     "First": "Primo",

@@ -18,7 +18,7 @@ var resourcePath = otp.config.resourcePath || "";
 
 var StartFlagIcon = L.Icon.extend({
     options: {
-        iconUrl: resourcePath + 'images/5t/marker-flag-start-'+ i18n.lng() +'.png',
+        iconUrl: resourcePath + 'images/5t/bike/marker-flag-start-'+ i18n.lng() +'.png',
         shadowUrl: null,
         iconSize: new L.Point(87, 48),
         iconAnchor: new L.Point(43, 48),
@@ -28,7 +28,7 @@ var StartFlagIcon = L.Icon.extend({
 
 var EndFlagIcon = L.Icon.extend({
     options: {
-        iconUrl: resourcePath + 'images/5t/marker-flag-end-'+ i18n.lng() +'.png',
+        iconUrl: resourcePath + 'images/5t/bike/marker-flag-end-'+ i18n.lng() +'.png',
         shadowUrl: null,
         iconSize: new L.Point(87, 48),
         iconAnchor: new L.Point(43, 48),
