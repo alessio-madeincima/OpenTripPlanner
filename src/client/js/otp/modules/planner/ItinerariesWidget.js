@@ -41,9 +41,12 @@ otp.widgets.ItinerariesWidget =
             //TRANSLATORS: Widget title
             title : _tr("Itineraries"),
             cssClass : module.itinerariesWidgetCssClass || 'otp-defaultItinsWidget',
-            resizable : true,
-            closeable : true,
-            persistOnClose : true
+            resizable : false,
+            closeable : false,
+            minimizable: false,
+            draggable : false,
+            persistOnClose : true,
+            sonOf: '#sidebar',
         });
         //this.$().addClass('otp-itinsWidget');
         //this.$().resizable();
@@ -177,7 +180,7 @@ otp.widgets.ItinerariesWidget =
             this_.renderHeaders();
         });
 
-        this.$().draggable({ cancel: "#"+divId });
+        //raf this.$().draggable({ cancel: "#"+divId });
 
     },
 

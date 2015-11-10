@@ -37,6 +37,8 @@ otp.widgets.tripoptions.TripOptionsWidget =
 
         //this.planTripCallback = planTripCallback;
         this.module = module;
+        
+        
 
         this.controls = {};
     },
@@ -57,10 +59,10 @@ otp.widgets.tripoptions.TripOptionsWidget =
 
     initScrollPanel : function() {
         this.scrollPanel = $('<div id="'+this.id+'-scollPanel" class="notDraggable" style="overflow: auto;"></div>').appendTo(this.$());
-        this.$().resizable({
+        /*this.$().resizable({
             minHeight: 80,
             alsoResize: this.scrollPanel
-        });
+        });*/
     },
 
     addSeparator : function(scrollable) {

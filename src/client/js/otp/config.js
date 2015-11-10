@@ -195,7 +195,7 @@ otp.config = {
             id : 'bikeshare',
             className : 'otp.modules.bikeshare.BikeShareModule',
             defaultBaseLayer : 'Grigione',
-            isDefault: true
+            //isDefault: true
         }
     ],
 
