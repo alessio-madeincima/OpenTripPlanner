@@ -278,6 +278,10 @@ otp.modules.planner.IconFactory = otp.Class({
     
     initialize : function() {
     },
+    
+    getEventMarker: function(event) {
+        return this.mediumBlue;
+    },
        
     getSmall : function(station) {
         var pct =  station.bikesAvailable / (station.bikesAvailable + station.spacesAvailable);

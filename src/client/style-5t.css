@@ -80,6 +80,17 @@ author: Madeincima.it
         .box-title-close{padding-top:13px;height:25px}
         .otp-widget-header h2{float:left;text-transform:uppercase;color:#000000;font-weight:bold;font-family:roboto,sans-serif}
         .otp-widget-header h2 span{color:#6a9308} 
+/*  datex */
+.otp-eventsWidget{float: left; width: 100%;background-color: #fff; border: 1px solid red}
+.otp-eventsWidget ul{list-style: none}
+.otp-eventsWidget li.evento {padding: 0 14px 0 20px; line-height: 140%;}
+.otp-eventsWidget li.evento a {background-position: 5px 18px;background-repeat: no-repeat; color: #101010; padding: 15px 0 15px 55px; display: block;
+                position: relative;border-bottom: 1px solid #f6f6f6;}
+.otp-eventsWidget li.evento a:hover {background-color: #f4f9fb;}
+.otp-eventsWidget li.evento h3 {font-size: 1.1em;margin-bottom: 2px;}
+
+.chiusura {background-image: url(images/5t/mip/ico_chiusura.png);}
+}
 
     /* Box Trip planner */
 /*.otp-widget-nonTransparent{padding: 20px 25px 25px;}*/

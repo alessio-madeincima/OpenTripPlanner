@@ -51,7 +51,7 @@ otp.widgets.Widget = otp.Class({
         this.owner.addWidget(this);
 
         // set up the main widget DOM element:
-        this.mainDiv = $('<div />').attr('id', id).addClass('otp-widget').appendTo(/*'#sidebar'*/this.sonOf);
+        this.mainDiv = $('<div />').attr('id', id).addClass('otp-widget').appendTo(this.sonOf);
         if(!this.transparent) this.mainDiv.addClass('otp-widget-nonTransparent');
 
         if(!this.openInitially) {
