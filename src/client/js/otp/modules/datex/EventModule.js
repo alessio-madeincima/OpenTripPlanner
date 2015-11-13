@@ -18,6 +18,7 @@ otp.modules.datex.EventModel =
     Backbone.Model.extend({
     
     defaults: {
+          papero: 'paperino',
           id: null,
           timeRanges: [],
           cause: null,
@@ -28,7 +29,18 @@ otp.modules.datex.EventModel =
     distanceTo: function(point) {
         var distance = otp.modules.datex.Utils.distance;
         return distance(this.get('x'), this.get('y'), point.lng, point.lat);
-    }
+    },
+    pippo: 'pluto',
+    eventDirection: function(){
+        return "pippo";
+        if(this.direction == "Entrambe"){
+            return "in entrambe le direzioni.";			
+        }
+        else if (this.direction != ""){
+            return "in direzione "+this.direction+".";
+        }
+        return "pippo";
+    },
 });
 
 otp.modules.datex.EventCollection = 
@@ -36,7 +48,7 @@ otp.modules.datex.EventCollection =
     
     url: otp.config.hostname + '/traffic-events',
     model: otp.modules.datex.EventModel,
-    
+    /*
     sync: function(method, model, options) {
         options.dataType = 'json';
         options.data = options.data || {};
@@ -47,6 +59,7 @@ otp.modules.datex.EventCollection =
         options.data.locale = otp.config.locale.config.locale_short;
         return Backbone.sync(method, model, options);
     },
+    */
     /*
     parse: function(rawData, options) {
         return _.filter(rawData.events, function(event){
