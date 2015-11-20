@@ -88,7 +88,7 @@ otp.core.Map = otp.Class({
                 }
             });
         }
-
+/*
         this.layer_control.addOverlay(new L.tileLayer.wms("http://172.21.9.6:8180/geoserver/gwc/service/wms?&configuration=optima&", {
                                         layers: 'optima:rlin_tre_fore0_cache',
                                         format: 'image/png',
@@ -96,7 +96,7 @@ otp.core.Map = otp.Class({
                                         version: '1.1.0',
                                         //attribution: "myattribution",
                                         }) , 'traffico');
-      
+*/      
         if(!otp.config.initLatLng) {
             var url = otp.config.hostname + '/' + otp.config.restService;
             $.ajax(url, {

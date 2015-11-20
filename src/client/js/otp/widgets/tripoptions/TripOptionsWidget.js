@@ -454,6 +454,76 @@ otp.widgets.tripoptions.WheelChairSelector =
 });
 
 
+//** TrafficSelector **//
+
+otp.widgets.tripoptions.TrafficSelector =
+    otp.Class(otp.widgets.tripoptions.TripOptionsWidgetControl, {
+
+    id           :  null,
+    //TRANSLATORS: label for checkbox
+    label        : 'info traffico', //_tr("Wheelchair accesible trip:"),
+
+    initialize : function(tripWidget) {
+
+        otp.widgets.tripoptions.TripOptionsWidgetControl.prototype.initialize.apply(this, arguments);
+
+        this.id = tripWidget.id;
+
+/*
+        ich['otp-tripOptions-wheelchair']({
+            widgetId : this.id,
+            label : this.label,
+        }).appendTo(this.$());
+*/
+        var html = '<div class="notDraggable"><label for="traffic-input">' + this.label + '</label>';
+        html += ' <input type="checkbox" id="traffic-input" /></div>';
+                
+        $(html).appendTo(this.$());        
+
+    },
+
+    doAfterLayout : function() {
+        var this_ = this;
+
+        $("#traffic-input").change(function() {
+            
+            //this_.tripWidget.module.wheelchair = this.checked;
+            if($("#traffic-input").prop('checked')) {
+                //alert('yes')
+                //this_.tripWidget.module.webapp.map.lmap.panTo(latlng);
+                //this_.tripWidget.module.webapp.modules['otp.modules.datex.EventModule.otp.Class'].activate();
+                this_.tripWidget.module.webapp.modules[2].activate();
+                this_.tripWidget.module.webapp.modules[2].selected();
+                
+            } else {
+                // something else when not
+                //alert('no')
+                this_.tripWidget.module.webapp.modules[2].deselected();
+            }
+
+            
+            
+        });
+    },
+
+    restorePlan : function(data) {
+        /*if(data.queryParams.wheelchair) {
+            $("#"+this.id+"-wheelchair-input").prop("checked", data.queryParams.wheelchair);
+        }*/
+    },
+
+    isApplicableForMode : function(mode) {
+        //wheelchair mode is shown on transit and walk trips that
+        //doesn't include a bicycle
+        //return (otp.util.Itin.includesTransit(mode)  || mode == "CAR");
+        return  mode == "CAR";
+    }
+});
+
+
+
+
+
 //** ModeSelector **//
 
 otp.widgets.tripoptions.ModeSelector =

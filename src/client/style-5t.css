@@ -88,8 +88,24 @@ author: Madeincima.it
                 position: relative;border-bottom: 1px solid #f6f6f6;}
 .otp-eventsWidget li.evento a:hover {background-color: #f4f9fb;}
 .otp-eventsWidget li.evento h3 {font-size: 1.1em;margin-bottom: 2px;}
+.otp-eventsWidget li.evento em.Attivo {display: block; color: #cb0032; font-weight: bold; font-style: normal;}
+.otp-eventsWidget li.evento em.Terminato {display: block;font-style: normal;text-decoration:line-through; font-weight:normal; color: #333}
+.otp-eventsWidget li.evento time {color: #a3a3a3;}
 
-.chiusura {background-image: url(images/5t/mip/ico_chiusura.png);}
+
+
+.apertura {background-image:url(images/5t/mip/ico_apertura.png)}
+.attenzione {background-image:url(images/5t/mip/ico_attenzione.png)}
+.catene {background-image:url(images/5t/mip/ico_catene.png)}
+.chiusura {background-image:url(images/5t/mip/ico_chiusura.png)}
+.incidente {background-image:url(images/5t/mip/ico_incidente.png)}
+.lavori {background-image:url(images/5t/mip/ico_lavori.png)}
+.nebbia {background-image:url(images/5t/mip/ico_nebbia.png)}
+.neve {background-image:url(images/5t/mip/ico_neve.png)}
+.temporale {background-image:url(images/5t/mip/ico_temporale.png)}
+.traffico {background-image:url(images/5t/mip/ico_traffico.png)}
+.vento {background-image:url(images/5t/mip/ico_vento.png)}
+
 }
 
     /* Box Trip planner */

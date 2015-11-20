@@ -110,6 +110,33 @@ otp.modules.bikeshare.BikeShareModule =
         this.optionsWidget.applyQueryParams(this.defaultQueryParams);
        
     },
+    /**
+     * Called when the module is selected as active by the user. When the module
+     * is selected for the first time, the call to selected() follows the calls
+     * to activate() and restore().
+     */
+
+    selected : function() {
+        //raf aagiungo il layer in funzione del livello di zoom
+        //this.addLayer("Bike Stations", this.eventsLayer);
+        this.refresh();
+        this.webapp.map.lmap.on('dragend zoomend', $.proxy(this.refresh, this));
+    },
+     
+
+    /**
+     * Called when the module loses focus due to another being selected as
+     * active by the user.
+     */
+        
+    deselected : function() {
+        //raf aagiungo il layer in funzione del livello di zoom
+        //this.addLayer("Bike Stations", this.stationsLayer);
+        this.webapp.map.lmap.off('dragend zoomend');
+        
+        var lmap = this.webapp.map.lmap;
+        lmap.removeLayer(this.stationsLayer);
+    },
     
     initOptionsWidget : function() {
         this.optionsWidget = new otp.widgets.tripoptions.TripOptionsWidget(

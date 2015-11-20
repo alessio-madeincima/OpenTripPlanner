@@ -19,6 +19,7 @@ otp.modules.datex.EventModel =
     
     defaults: {
           papero: 'paperino',
+          latlng: null,
           id: null,
           timeRanges: [],
           cause: null,
@@ -26,27 +27,59 @@ otp.modules.datex.EventModel =
           url: null,
           descriptionText: null
     },
+    initialize: function(){
+        
+        this.latlng = L.latLng(this.attributes['lat'] , this.attributes['lng']);
+        this.attributes['visible'] = true; 
+        this.attributes['roadNumber'] = this.attributes['roadNumber'].replace("(", " (");
+        this.attributes['roadName'] = this.attributes['roadName'].replace("(", " (");
+        
+        //locationDescription
+        if(this.attributes['secondaryLocation']){
+			//qualche minuscola...
+			this.attributes['primaryLocation']=this.attributes['primaryLocation'].replace("Allacciamento","allacciamento").replace("Svincolo","svincolo");
+			this.attributes['secondaryLocation']=this.attributes['secondaryLocation'].replace("Allacciamento","allacciamento").replace("Svincolo","svincolo");			
+			this.attributes['locationDescription'] = "fra "+this.attributes['primaryLocation']+" e "+this.attributes['secondaryLocation']; 
+		}else{
+			this.attributes['locationDescription'] =  this.attributes['primaryLocation'];
+        }
+                
+        //eventDirection
+        if(this.attributes['direction'] == "Entrambe"){
+            this.attributes['eventDirection'] = "in entrambe le direzioni.";			
+        }
+        else if (this.attributes['direction'] != "" && this.attributes['secondaryLocation'] != ""){
+             this.attributes['eventDirection'] = "in direzione "+ this.attributes['direction']+".";
+        }
+
+        //eventTerminated
+        this.attributes['terminated'] = (this.attributes['status'] == 'Terminato' ? true : false);
+    
+        //ritorna la riga con le date di inizio/fine a seconda dell'evento
+        if(this.attributes['dob']=='LOS' || this.attributes['dob']=='PRE' || this.attributes['dob']=='ACC'|| this.attributes['dob']=='FOS')
+			{this.attributes['eventDates'] =  "aggiornato alle " + this.attributes['formattedUpdateDate'];
+		}
+        else {
+			var alDate="";
+			if(this.attributes['endDate']){
+				alDate= " al "+this.attributes['endDate'].replace("23:59","");
+			}
+			this.attributes['eventDates'] =  "dal "+this.attributes['startDate'].replace("00:00","") + alDate; 
+		}
+        
+        
+    },
     distanceTo: function(point) {
         var distance = otp.modules.datex.Utils.distance;
         return distance(this.get('x'), this.get('y'), point.lng, point.lat);
     },
-    pippo: 'pluto',
-    eventDirection: function(){
-        return "pippo";
-        if(this.direction == "Entrambe"){
-            return "in entrambe le direzioni.";			
-        }
-        else if (this.direction != ""){
-            return "in direzione "+this.direction+".";
-        }
-        return "pippo";
-    },
+    
 });
 
 otp.modules.datex.EventCollection = 
     Backbone.Collection.extend({
     
-    url: otp.config.hostname + '/traffic-events',
+    url: otp.config.hostname + '/traffic-events?category=traffic,closure,weather,others',
     model: otp.modules.datex.EventModel,
     /*
     sync: function(method, model, options) {
@@ -82,12 +115,14 @@ otp.modules.datex.EventModule =
     
     //moduleName  : _tr("Bike Share Planner"),
     moduleName  : "Eventi di traffico",
+    moduleSelected: null, //raf var di stato
 
     categoriesWidget   : null,
     
     events    : null,    
     eventLookup :   { },
     eventsLayer   : null,
+    tagliatelLayer : null, 
      
     initialize : function(webapp) {
         otp.modules.Module.prototype.initialize.apply(this, arguments);
@@ -98,29 +133,34 @@ otp.modules.datex.EventModule =
     },
     
     activate : function() {
+        console.log('EventModule activated');
         if(this.activated) return;
         //otp.modules.planner.PlannerModule.prototype.activate.apply(this);
         //this.mode = "WALK,BICYCLE_RENT";
         this.initEvents();
         this.eventsLayer = new L.LayerGroup();
+        this.tagliatelLayer = new L.tileLayer.wms("http://172.21.9.6:8180/geoserver/gwc/service/wms?&configuration=optima&", {
+                                        layers: 'optima:rlin_tre_fore0_cache',
+                                        format: 'image/png',
+                                        transparent: true,
+                                        version: '1.1.0',
+                                        //attribution: "myattribution",
+                                    });
+        this.tagliatelLayer.setZIndex(100);
+        
         //raf aagiungo il layer in funzione del livello di zoom
         //this.addLayer("Bike Stations", this.eventsLayer);
-        this.webapp.map.lmap.on('dragend zoomend', $.proxy(this.refresh, this));
-        /*
-        this.categoriesWidget = new otp.widgets.EventsCategoryWidget(this.id+"-categoriesWidget", this, {
-            title : _tr('Trip Options'),     sonOf: '#sidebar',
-        });
-        */
+        //this.webapp.map.lmap.on('dragend zoomend', $.proxy(this.refresh, this));
+        
         this.categoriesWidget = new otp.widgets.EventsCategoryWidget('otp-eventsWidget', this);
         //this.categoriesWidget.setContentAndShow(this.events, this);
         //this.categoriesWidget.show();
-        
         
 
         var this_ = this;
         setInterval(function() {
             this_.reloadEvents();
-        }, 300000);//raf *10
+        }, 20000);//raf *10
         
         
         //this.initOptionsWidget();
@@ -129,6 +169,58 @@ otp.modules.datex.EventModule =
         //this.optionsWidget.applyQueryParams(this.defaultQueryParams);
        
     },
+    
+    /**
+     * Called when the module is selected as active by the user. When the module
+     * is selected for the first time, the call to selected() follows the calls
+     * to activate() and restore().
+     */
+
+    selected : function() {
+        //raf aagiungo il layer in funzione del livello di zoom
+        //this.addLayer("Bike Stations", this.eventsLayer);
+        this.moduleSelected = true;
+        this.refresh();
+        this.webapp.map.lmap.on('dragend zoomend', $.proxy(this.refresh, this));
+        this.categoriesWidget.show();
+        /*
+        this.webapp.map.lmap.addLayer(new L.tileLayer.wms("http://172.21.9.6:8180/geoserver/gwc/service/wms?&configuration=optima&", {
+                                        layers: 'optima:rlin_tre_fore0_cache',
+                                        format: 'image/png',
+                                        transparent: true,
+                                        version: '1.1.0',
+                                        //attribution: "myattribution",
+                                        }) , 'traffico');
+        */
+        this_ = this;
+        //setTimeout(function() {
+                this_.webapp.map.lmap.addLayer(this_.tagliatelLayer);
+        //}, 300);
+        
+        
+    },
+     
+
+    /**
+     * Called when the module loses focus due to another being selected as
+     * active by the user.
+     */
+        
+    deselected : function() {
+        //raf aagiungo il layer in funzione del livello di zoom
+        //this.addLayer("Bike Stations", this.eventsLayer);
+        
+        //this.webapp.map.lmap.off('dragend zoomend');
+        this.moduleSelected = false;
+        var lmap = this.webapp.map.lmap;
+        lmap.removeLayer(this.eventsLayer);
+        lmap.removeLayer(this.tagliatelLayer);
+        this.categoriesWidget.hide();
+        
+        
+    },
+
+    
 /*    
     initOptionsWidget : function() {
         this.optionsWidget = new otp.widgets.tripoptions.TripOptionsWidget(
@@ -286,11 +378,11 @@ otp.modules.datex.EventModule =
         this.events = new otp.modules.datex.EventCollection();
         this.events.on('reset', this.onResetEvents, this);
         
-        this.events.fetch();
+        this.events.fetch({reset: true});
     },
 
     reloadEvents : function(events) {
-        this.events.fetch();
+        this.events.fetch({reset: true});
     },
             
     constructEventInfo : function(title, event) {
@@ -305,23 +397,38 @@ otp.modules.datex.EventModule =
     },
     //refresh event markers based on zoom level
     refresh : function() {
-    	var lmap = this.webapp.map.lmap;
-    	 if( lmap.getZoom() < 12   && lmap.hasLayer(this.eventsLayer)  ){
-              lmap.removeLayer(this.eventsLayer);
-    		 console.log('togli stazioni');
-    	 }
-    	 if(lmap.getZoom() >= 12   &&  lmap.getZoom() < 16 && !lmap.hasLayer(this.eventsLayer)){
-    		 lmap.addLayer(this.eventsLayer);
-    		/* this.events.each(function(event) {
-    			 setStationMarker(event, 'no-title', this.icons.getMedium(eventData));
-    		 });*/
-    		 
-    		 console.log('metti stazioni piccole');
-    	 }
-    	 if(lmap.getZoom() >= 16  ){
-    		 console.log('icone grandi');
-    	 }
+        this.filterEventsOnMapBounds();
+        this.categoriesWidget.setContentAndShow(this.events, this);
+    	 var lmap = this.webapp.map.lmap;
+         if(this.moduleSelected){
+        	 if( lmap.getZoom() < 8   && lmap.hasLayer(this.eventsLayer)  ){
+                  lmap.removeLayer(this.eventsLayer);
+        		 console.log('togli stazioni');
+        	 }
+        	 if(lmap.getZoom() >= 8   &&  lmap.getZoom() < 16 && !lmap.hasLayer(this.eventsLayer)){
+        		 lmap.addLayer(this.eventsLayer);
+                 
+        		/* this.events.each(function(event) {
+        			 setStationMarker(event, 'no-title', this.icons.getMedium(eventData));
+        		 });*/
+        		 
+        		 console.log('metti stazioni piccole');
+        	 }
+        	 if(lmap.getZoom() >= 16  ){
+        		 console.log('icone grandi');
+        	 }
+        }
     },
+    filterEventsOnMapBounds: function() {
+            var bb = this.webapp.map.lmap.getBounds();
+            this.events.each(function(event) {
+                if (bb.contains(event.latlng))
+                     event.attributes['visible'] = true
+                else event.attributes['visible'] = false
+            });
+        
+    },
+    
                 
-    CLASS_NAME : "otp.modules.datex.BikeShareModule"
+    CLASS_NAME : "otp.modules.datex.EventModule"
 });

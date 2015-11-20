@@ -39,7 +39,7 @@ otp.widgets.EventsCategoryWidget =
 	},
 	
 	setContentAndShow: function(events, module) {
-		console.log('events è', events)
+		console.log('numero eventi:', events.length)
 	    /*var start = startStation.toJSON(),
 	        end = endStation.toJSON();
 
@@ -50,16 +50,15 @@ otp.widgets.EventsCategoryWidget =
 		//$("#datex-categoriesWidget").empty();
 		
 
-                
+        $('#otp-datexEventList').remove('');
         ich['otp-datexEventList']({
                     widgetId : this.id,
 					category: 'Lavori',
          }).appendTo(this.$());
 
-		
 		events.each(function(evento, index){
 			//var ev = evento.toJSON();
-			if(index < 5)
+			if(evento.attributes['visible']   && index < 100 )
 		    	ich['otp-datexEventItem']({ev:evento.toJSON()}).appendTo($('#otp-datexEventList ul'));
 		});
 		

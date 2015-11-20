@@ -49,7 +49,7 @@ otp.core.MapContextMenu =
     getOffset : function(event) {
         return { 
             top: event.containerPoint.y + this.map.$().offset().top,
-            left: event.containerPoint.x
+            left: event.containerPoint.x+ this.map.$().offset().left
         };
     },
         
