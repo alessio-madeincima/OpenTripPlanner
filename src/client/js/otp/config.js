@@ -159,7 +159,7 @@ otp.config = {
             id : 'planner',
             className : 'otp.modules.multimodal.MultimodalPlannerModule',
             defaultBaseLayer : 'Mappa',
-            isDefault: true
+            //isDefault: true
         },
         /*{
             id : 'analyst',
@@ -175,7 +175,7 @@ otp.config = {
            id : 'datex',
            className : 'otp.modules.datex.EventModule',
            defaultBaseLayer : 'Grigione',
-           //isDefault: true
+           isDefault: true
        }
     ],
 

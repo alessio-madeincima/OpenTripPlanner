@@ -75,6 +75,7 @@ otp.modules.multimodal.MultimodalPlannerModule =
         //modeSelector.addModeControl(new otp.widgets.tripoptions.BannedRoutes(this.optionsWidget));
         //modeSelector.addModeControl(new otp.widgets.tripoptions.WheelChairSelector(this.optionsWidget));
         modeSelector.addModeControl(new otp.widgets.tripoptions.TrafficSelector(this.optionsWidget));
+        //modeSelector.addModeControl(new otp.widgets.tripoptions.EventCategorySelector(this.optionsWidget));
 
         modeSelector.refreshModeControls();
 

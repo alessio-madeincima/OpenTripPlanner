@@ -521,6 +521,58 @@ otp.widgets.tripoptions.TrafficSelector =
 });
 
 
+//** EventCategorySelector **//
+/*
+otp.widgets.tripoptions.EventCategorySelector =
+    otp.Class(otp.widgets.tripoptions.TripOptionsWidgetControl, {
+
+    id           :  null,
+    //TRANSLATORS: label for checkbox
+    //label        : 'info traffico', //_tr("Wheelchair accesible trip:"),
+
+    initialize : function(tripWidget) {
+
+        otp.widgets.tripoptions.TripOptionsWidgetControl.prototype.initialize.apply(this, arguments);
+
+        this.id = tripWidget.id;
+
+        ich['otp-tripOptions-eventcategory']({
+            //widgetId : this.id,
+            //label : this.label,
+            code: 'Code e incidenti',
+            chiusure: 'Chiusure e cantieri',
+            meteo: 'Eventi atmosferici',
+            altro: 'Altre informazioni'
+        }).appendTo(this.$());
+
+    },
+
+    doAfterLayout : function() {
+        var this_ = this;
+
+        $("#input-eventCategory-code").change(function() {            
+            if($("#input-eventCategory-code").prop('checked')) {
+                alert('code yes')
+                //this_.tripWidget.module.webapp.modules[2].selected();
+                
+            } else {
+                alert('code no')
+                //this_.tripWidget.module.webapp.modules[2].deselected();
+            }        
+            
+        });
+    },
+
+
+    isApplicableForMode : function(mode) {
+        //wheelchair mode is shown on transit and walk trips that
+        //doesn't include a bicycle
+        //return (otp.util.Itin.includesTransit(mode)  || mode == "CAR");
+        return  mode == "CAR";
+    }
+});
+
+*/
 
 
 

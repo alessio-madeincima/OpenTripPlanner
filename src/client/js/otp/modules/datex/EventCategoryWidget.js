@@ -9,75 +9,45 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 otp.namespace("otp.widgets");
 
-otp.widgets.EventsCategoryWidget = 
+otp.widgets.EventsCategoryWidget =
 	otp.Class(otp.widgets.Widget, {
-	
+
 	_div: null,
-	
-	start_button: null,
-	
-	end_button: null,
-		 
+	module : null,
+
 	initialize : function(id, module) {
 	    otp.configure(this, id);
+		this.module = module;
 	    otp.widgets.Widget.prototype.initialize.call(this, id, module, {
 	        cssClass : 'otp-eventsWidget',
-	        showHeader : true,
-	        draggable : true,
-			closeable : true,
+	        showHeader : false,
+	        draggable : false,
+			closeable : false,
 	        transparent : true,
 	        openInitially : true,
 			sonOf:	'#sidebar'
 	    });
-	     
-	    //this.hide();
+
+		categoryView = new otp.modules.datex.CategoryView();
+		categoryView.render().$el.appendTo(this.$());
+		
+		filterEventsView = new otp.modules.datex.FilterEventsView();
+		filterEventsView.render().$el.appendTo(this.$());
+		
 	},
-	
+
 	setContentAndShow: function(events, module) {
-		console.log('numero eventi:', events.length)
-	    /*var start = startStation.toJSON(),
-	        end = endStation.toJSON();
-
-		// Fit station names to widget:
-		start.name = start.name.length > 50 ? start.name.substring(0,50) + "..." : start.name;
-		end.name = end.name.length > 50 ? end.name.substring(0,50) + "..." : end.name;
-*/
-		//$("#datex-categoriesWidget").empty();
-		
-
-        $('#otp-datexEventList').remove('');
-        ich['otp-datexEventList']({
-                    widgetId : this.id,
-					category: 'Lavori',
-         }).appendTo(this.$());
-
-		events.each(function(evento, index){
-			//var ev = evento.toJSON();
-			if(evento.attributes['visible']   && index < 100 )
-		    	ich['otp-datexEventItem']({ev:evento.toJSON()}).appendTo($('#otp-datexEventList ul'));
-		});
-		
-/*        var start_marker = module.getStationMarker(startStation);
-        var end_marker = module.getStationMarker(endStation);
-
-        $("#pickup_btn").click(function(e) {
-        	e.preventDefault();
-        	start_marker.openPopup();
-        });
-
-        $("#dropoff_btn").click(function(e) {
-        	e.preventDefault();
-        	end_marker.openPopup();
-        });
-        
-*/        
+		//console.log('numero eventi:', events.length)
+		eventListView = new otp.modules.datex.EventListView({collection: events})	
+		eventListView.rinfresca().$el.appendTo(this.$());
+	
 	},
 
 	CLASS_NAME : "otp.widgets.EventsCategoryWidget"
-	 
+
 });

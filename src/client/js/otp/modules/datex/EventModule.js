@@ -2,143 +2,315 @@
    modify it under the terms of the GNU Lesser General Public License
    as published by the Free Software Foundation, either version 3 of
    the License, or (at your option) any later version.
-   
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-   
+
    You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 otp.namespace("otp.modules.datex");
 
-otp.modules.datex.EventModel = 
+otp.modules.datex.EventModel =
     Backbone.Model.extend({
-    
+
     defaults: {
-          papero: 'paperino',
           latlng: null,
           id: null,
-          timeRanges: [],
-          cause: null,
-          effect: null,
-          url: null,
-          descriptionText: null
     },
     initialize: function(){
+
+        this.latlng = L.latLng(this.get('lat') , this.get('lng'));
+
+        this.set('visible', true);
+        this.set('catVisible', true);
+        this.set('filterVisible', true);
         
-        this.latlng = L.latLng(this.attributes['lat'] , this.attributes['lng']);
-        this.attributes['visible'] = true; 
-        this.attributes['roadNumber'] = this.attributes['roadNumber'].replace("(", " (");
-        this.attributes['roadName'] = this.attributes['roadName'].replace("(", " (");
-        
+        this.set('roadNumber', this.get('roadNumber').replace("(", " (")  );
+        this.set('roadName', this.get('roadName').replace("(", " (")  );
+
         //locationDescription
-        if(this.attributes['secondaryLocation']){
+        if(this.get('secondaryLocation')){
 			//qualche minuscola...
-			this.attributes['primaryLocation']=this.attributes['primaryLocation'].replace("Allacciamento","allacciamento").replace("Svincolo","svincolo");
-			this.attributes['secondaryLocation']=this.attributes['secondaryLocation'].replace("Allacciamento","allacciamento").replace("Svincolo","svincolo");			
-			this.attributes['locationDescription'] = "fra "+this.attributes['primaryLocation']+" e "+this.attributes['secondaryLocation']; 
+			this.set('primaryLocation',   this.get('primaryLocation').replace("Allacciamento","allacciamento").replace("Svincolo","svincolo")  );
+			this.set('secondaryLocation', this.get('secondaryLocation').replace("Allacciamento","allacciamento").replace("Svincolo","svincolo"));
+			this.set('locationDescription',  "fra "+this.get('primaryLocation')+" e "+this.get('secondaryLocation')  );
 		}else{
-			this.attributes['locationDescription'] =  this.attributes['primaryLocation'];
+			this.set('locationDescription', this.get('primaryLocation') );
         }
-                
+
         //eventDirection
-        if(this.attributes['direction'] == "Entrambe"){
-            this.attributes['eventDirection'] = "in entrambe le direzioni.";			
+        if(this.get('direction') == "Entrambe"){
+            this.set('eventDirection', "in entrambe le direzioni.");
         }
-        else if (this.attributes['direction'] != "" && this.attributes['secondaryLocation'] != ""){
-             this.attributes['eventDirection'] = "in direzione "+ this.attributes['direction']+".";
+        else if (this.get('direction') != "" && this.get('secondaryLocation') != ""){
+             this.set('eventDirection', "in direzione "+ this.get('direction')+"." );
         }
 
         //eventTerminated
-        this.attributes['terminated'] = (this.attributes['status'] == 'Terminato' ? true : false);
-    
+        this.set('terminated', (this.get('status') == 'Terminato' ? true : false));
+
         //ritorna la riga con le date di inizio/fine a seconda dell'evento
-        if(this.attributes['dob']=='LOS' || this.attributes['dob']=='PRE' || this.attributes['dob']=='ACC'|| this.attributes['dob']=='FOS')
-			{this.attributes['eventDates'] =  "aggiornato alle " + this.attributes['formattedUpdateDate'];
+        if(this.get('dob')=='LOS' || this.get('dob')=='PRE' || this.get('dob')=='ACC'|| this.get('dob')=='FOS')
+			{this.set('eventDates',  "aggiornato alle " + this.get('formattedUpdateDate'));
 		}
         else {
 			var alDate="";
-			if(this.attributes['endDate']){
-				alDate= " al "+this.attributes['endDate'].replace("23:59","");
+			if(this.get('endDate')){
+				alDate= " al "+this.get('endDate').replace("23:59","");
 			}
-			this.attributes['eventDates'] =  "dal "+this.attributes['startDate'].replace("00:00","") + alDate; 
+			this.set('eventDates',  "dal "+this.get('startDate').replace("00:00","") + alDate );
 		}
-        
-        
+
+
     },
     distanceTo: function(point) {
         var distance = otp.modules.datex.Utils.distance;
         return distance(this.get('x'), this.get('y'), point.lng, point.lat);
     },
-    
-});
-
-otp.modules.datex.EventCollection = 
-    Backbone.Collection.extend({
-    
-    url: otp.config.hostname + '/traffic-events?category=traffic,closure,weather,others',
-    model: otp.modules.datex.EventModel,
-    /*
-    sync: function(method, model, options) {
-        options.dataType = 'json';
-        options.data = options.data || {};
-        if(otp.config.routerId !== undefined) {
-            options.data.routerId = otp.config.routerId;
-        }
-        //Sends wanted translation to server
-        options.data.locale = otp.config.locale.config.locale_short;
-        return Backbone.sync(method, model, options);
+    toggleCatVisibility: function() {
+        if (this.get('catVisible') == true)
+             this.set('catVisible', false)
+        else this.set('catVisible', true)
     },
-    */
-    /*
-    parse: function(rawData, options) {
-        return _.filter(rawData.events, function(event){
-                return event.bikesAvailable != 0 ||  event.spacesAvailable != 0 ;
-        });
-    }*/
+    setFilterVisibility: function() {
+        if (this.get('catVisible') == true)
+             this.set('catVisible', false)
+        else this.set('catVisible', true)
+    },
+});
+
+otp.modules.datex.EventCollection =
+    Backbone.Collection.extend({
+
+    //url: otp.config.hostname + '/traffic-events?category=traffic,closure,weather,others',
+    url: 'http://barrone.5t.torino.it/traffic-events?category=traffic,closure,weather,others',
+    model: otp.modules.datex.EventModel,
+    
+    initialize: function(){
+            //Backbone.eventBus.on('traffic-on', function(){alert('minchia, codeChanged!')});
+            Backbone.eventBus.on('traffic-switch', this.trafficSwitch, this);
+            Backbone.eventBus.on('closure-switch', this.closureSwitch, this);
+            Backbone.eventBus.on('weather-switch', this.weatherSwitch, this);
+            Backbone.eventBus.on('others-switch',  this.othersSwitch, this);
+            
+            Backbone.eventBus.on('filterEventsChanged',  this.filterEventsChanged, this);
+            
+            
+    },
+    trafficSwitch: function(){
+        _.each(this.where({category: 'traffic'}), function(ev){
+            ev.toggleCatVisibility();
+      });
+      Backbone.eventBus.trigger('rinfresca');
+    },
+    
+    closureSwitch: function(){
+        _.each(this.where({category: 'closure'}), function(ev){
+            ev.toggleCatVisibility();
+      });
+      Backbone.eventBus.trigger('rinfresca');
+    },
+    
+    weatherSwitch: function(){
+        _.each(this.where({category: 'weather'}), function(ev){
+            ev.toggleCatVisibility();
+      });
+      Backbone.eventBus.trigger('rinfresca');
+    },
+    
+    othersSwitch: function(){
+        _.each(this.where({category: 'others'}), function(ev){
+            ev.toggleCatVisibility();
+      });
+      Backbone.eventBus.trigger('rinfresca');
+    },
+    
+    filterEventsChanged: function(e){
+            console.log('evento', e);
+            var ftext = e.currentTarget.value;
+            console.log('ftext', ftext);
+            var filtered = this.filter( function(datexEvent){
+                return datexEvent.get('eventDescription').indexOf(ftext) > -1
+            });
+            console.log('filtrati', filtered);
+            this.each( function(datexEvent){
+                    datexEvent.set('filterVisible', datexEvent.get('eventDescription').indexOf(ftext) > -1);
+                });
+            /*
+            _.each(this.filter( function(datexEvent){
+                    return datexEvent.get('eventDescription').indexOf(ftext) > -1
+                }), function(ev){
+                    ev.set('filterVisible': );
+                    
+            });
+            */
+            Backbone.eventBus.trigger('rinfresca');
+    },
+    
+    getTraffic: function() {
+      return this.where({category: 'traffic'});
+    },
+
+    getClosure: function() {
+      return this.where({category: 'closure'});
+    },
 
 });
+otp.modules.datex.CategoryView =
+    Backbone.View.extend({
+        tagName: 'div',
+        className: 'lista-categorie',
+        
+        events: {
+           "change #input-eventCategory-code" : function(){Backbone.eventBus.trigger('traffic-switch')},
+           "change #input-eventCategory-chiusure" : function(){Backbone.eventBus.trigger('closure-switch')},
+           "change #input-eventCategory-meteo" : function(){Backbone.eventBus.trigger('weather-switch')},
+           "change #input-eventCategory-altro" : function(){Backbone.eventBus.trigger('others-switch')},
+         },
+    	render: function(){
+    		//this.$el.html( this.template());
+            this.$el.html( ich['otp-datexCategoryList']({
+                    widgetId : this.id,
+					code: 'Code e incidenti',
+					chiusure: 'Chiusure e cantieri',
+					meteo: 'Eventi atmosferici',
+					altro: 'Altre informazioni'
+                }) );
+            return this;
+	    },
+});
+
+otp.modules.datex.FilterEventsView =
+    Backbone.View.extend({
+        tagName: 'div',
+        className: 'filtroEvt',
+        
+        events: {
+           "keyup #input-filterEvents" : function(e){Backbone.eventBus.trigger('filterEventsChanged',e)},
+         },
+         render: function(){
+     		//this.$el.html( this.template(this.model.toJSON()));
+             this.$el.html( ich['otp-datexFilterEvents']({placeholder:'filtro eventi'})
+             );
+             return this;
+ 	    }
+     });
+
+otp.modules.datex.EventView =
+    Backbone.View.extend({
+        tagName: 'li',
+        className: 'evento',
+        events: {
+            "click .dtxEvt":  function(){Backbone.eventBus.trigger('evtClicked', this.model.id)}
+        },
+        
+
+    	render: function(){
+    		//this.$el.html( this.template(this.model.toJSON()));
+            this.$el.html( ich['otp-datexEventItem']({ev:this.model.toJSON()})
+            );
+            return this;
+	    }
+    });
+otp.modules.datex.EventListView =
+        Backbone.View.extend({
+            tagName: 'ul',
+            className: 'lista-eventi',
+            //tagName: 'ul',
+            //className: 'eventi',
+            initialize: function() {
+                this.collection.on('reset', this.render, this);
+                Backbone.eventBus.on('rinfresca', this.rinfresca, this);
+            },
+            
+            render: function(){
+                this.collection.each(function(evt){    
+                    if (evt.get('visible') && evt.get('catVisible')  && evt.get('filterVisible')) {
+            			var eventView = new otp.modules.datex.EventView({ model: evt });
+            			this.$el.append(eventView.render().el);
+                    }
+            	  }, this);
+                return this;
+            },
+            
+            rinfresca: function(){
+                //console.log(this.collection.length)
+                $('.lista-eventi').remove('');
+                this.$el.empty();
+                this.render().$el.appendTo($('#otp-eventsWidget'));
+                return this;
+            },
+            
+});
+
+
 
 otp.modules.datex.Utils = {
     distance : function(x1, y1, x2, y2) {
         return Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
-    }    
+    }
 };
 
 /* main class */
 
-otp.modules.datex.EventModule = 
+otp.modules.datex.EventModule =
     otp.Class(otp.modules.Module, {
-    
+
     //moduleName  : _tr("Bike Share Planner"),
     moduleName  : "Eventi di traffico",
     moduleSelected: null, //raf var di stato
 
-    categoriesWidget   : null,
-    
-    events    : null,    
+    trafficEventsWidget   : null,
+
+    events    : null,
     eventLookup :   { },
-    eventsLayer   : null,
-    tagliatelLayer : null, 
-     
+    //eventsLayer   : null,
+    
+    trafficLayerGroup : null,
+    closureLayerGroup : null,
+    weatherLayerGroup : null,
+    othersLayerGroup  : null,
+    
+    
+    tagliatelLayer : null,
+
     initialize : function(webapp) {
         otp.modules.Module.prototype.initialize.apply(this, arguments);
         this.icons = new otp.modules.planner.IconFactory();
+        Backbone.eventBus = _.extend({}, Backbone.Events);
+        
+        
+        Backbone.eventBus.on('traffic-switch', this.trafficSwitchMap, this);
+        Backbone.eventBus.on('closure-switch', this.closureSwitchMap, this);
+        Backbone.eventBus.on('weather-switch', this.weatherSwitchMap, this);
+        Backbone.eventBus.on('others-switch',  this.othersSwitchMap, this);
+        
+        Backbone.eventBus.on('evtClicked',  function(evid){
+            this.markers[evid].openPopup();
+        }, this);
+        
+        
         console.log('EventModule initialized');
-        //this.addWidget(this.categoriesWidget);
-        //this.templateFiles.push('otp/modules/planner/planner-templates.html');
+        
     },
-    
+    /**
+     * Called when the module is made active for the first time.
+     */
     activate : function() {
         console.log('EventModule activated');
         if(this.activated) return;
-        //otp.modules.planner.PlannerModule.prototype.activate.apply(this);
-        //this.mode = "WALK,BICYCLE_RENT";
         this.initEvents();
-        this.eventsLayer = new L.LayerGroup();
+        //this.eventsLayer = new L.LayerGroup();
+        this.trafficLayerGroup = new L.LayerGroup();
+        this.closureLayerGroup = new L.LayerGroup();
+        this.weatherLayerGroup = new L.LayerGroup();
+        this.othersLayerGroup  = new L.LayerGroup();
+        
+        
         this.tagliatelLayer = new L.tileLayer.wms("http://172.21.9.6:8180/geoserver/gwc/service/wms?&configuration=optima&", {
                                         layers: 'optima:rlin_tre_fore0_cache',
                                         format: 'image/png',
@@ -147,215 +319,106 @@ otp.modules.datex.EventModule =
                                         //attribution: "myattribution",
                                     });
         this.tagliatelLayer.setZIndex(100);
-        
-        //raf aagiungo il layer in funzione del livello di zoom
-        //this.addLayer("Bike Stations", this.eventsLayer);
-        //this.webapp.map.lmap.on('dragend zoomend', $.proxy(this.refresh, this));
-        
-        this.categoriesWidget = new otp.widgets.EventsCategoryWidget('otp-eventsWidget', this);
-        //this.categoriesWidget.setContentAndShow(this.events, this);
-        //this.categoriesWidget.show();
-        
+
+        this.trafficEventsWidget = new otp.widgets.EventsCategoryWidget('otp-eventsWidget', this);
 
         var this_ = this;
         setInterval(function() {
             this_.reloadEvents();
-        }, 20000);//raf *10
-        
-        
-        //this.initOptionsWidget();
-        
-        //this.defaultQueryParams.mode = "WALK,BICYCLE_RENT";
-        //this.optionsWidget.applyQueryParams(this.defaultQueryParams);
-       
+        }, 3000*1000);//raf *10
     },
-    
+
     /**
      * Called when the module is selected as active by the user. When the module
      * is selected for the first time, the call to selected() follows the calls
      * to activate() and restore().
      */
-
     selected : function() {
-        //raf aagiungo il layer in funzione del livello di zoom
-        //this.addLayer("Bike Stations", this.eventsLayer);
         this.moduleSelected = true;
-        this.refresh();
+        var lmap = this.webapp.map.lmap;
+        lmap.addLayer(this.trafficLayerGroup);
+        lmap.addLayer(this.closureLayerGroup);
+        lmap.addLayer(this.weatherLayerGroup);
+        lmap.addLayer(this.othersLayerGroup);
+        
+        //this.refresh();
         this.webapp.map.lmap.on('dragend zoomend', $.proxy(this.refresh, this));
-        this.categoriesWidget.show();
-        /*
-        this.webapp.map.lmap.addLayer(new L.tileLayer.wms("http://172.21.9.6:8180/geoserver/gwc/service/wms?&configuration=optima&", {
-                                        layers: 'optima:rlin_tre_fore0_cache',
-                                        format: 'image/png',
-                                        transparent: true,
-                                        version: '1.1.0',
-                                        //attribution: "myattribution",
-                                        }) , 'traffico');
-        */
-        this_ = this;
-        //setTimeout(function() {
-                this_.webapp.map.lmap.addLayer(this_.tagliatelLayer);
-        //}, 300);
-        
-        
+        this.webapp.map.lmap.addLayer(this.tagliatelLayer);
+
+        this.trafficEventsWidget.show();
+        this.trafficEventsWidget.setContentAndShow(this.events, this);
     },
-     
+
 
     /**
      * Called when the module loses focus due to another being selected as
      * active by the user.
      */
-        
     deselected : function() {
-        //raf aagiungo il layer in funzione del livello di zoom
-        //this.addLayer("Bike Stations", this.eventsLayer);
-        
-        //this.webapp.map.lmap.off('dragend zoomend');
         this.moduleSelected = false;
         var lmap = this.webapp.map.lmap;
-        lmap.removeLayer(this.eventsLayer);
+        //lmap.removeLayer(this.eventsLayer);
+        lmap.removeLayer(this.trafficLayerGroup);
+        lmap.removeLayer(this.closureLayerGroup);
+        lmap.removeLayer(this.weatherLayerGroup);
+        lmap.removeLayer(this.othersLayerGroup);
+        
         lmap.removeLayer(this.tagliatelLayer);
-        this.categoriesWidget.hide();
-        
-        
+        this.trafficEventsWidget.hide();
     },
 
-    
-/*    
-    initOptionsWidget : function() {
-        this.optionsWidget = new otp.widgets.tripoptions.TripOptionsWidget(
-            'otp-'+this.id+'-optionsWidget', this, {
-                title : _tr('Trip Options'),     
-            }
-        );
-
-        if(this.webapp.geocoders && this.webapp.geocoders.length > 0) {
-            this.optionsWidget.addControl("locations", new otp.widgets.tripoptions.LocationsSelector(this.optionsWidget, this.webapp.geocoders), true);
-            this.optionsWidget.addVerticalSpace(12, true);
-        }
-                
-        //this.optionsWidget.addControl("time", new otp.widgets.tripoptions.TimeSelector(this.optionsWidget), true);
-        //this.optionsWidget.addVerticalSpace(12, true);
-        
-        
-        //var modeSelector = new otp.widgets.tripoptions.ModeSelector(this.optionsWidget);
-        //this.optionsWidget.addControl("mode", modeSelector, true);
-
-        this.optionsWidget.addControl("triangle", new otp.widgets.tripoptions.BikeTriangle(this.optionsWidget));
-
-        this.optionsWidget.addControl("biketype", new otp.widgets.tripoptions.BikeType(this.optionsWidget));
-
-        this.optionsWidget.autoPlan = true;
-
-        this.optionsWidget.addSeparator();
-        this.optionsWidget.addControl("submit", new otp.widgets.tripoptions.Submit(this.optionsWidget));
-    },
-*/    
-/*
-    planTripStart : function() {
-        this.resetEventMarkers();
-    },
-*/    
-/*    processPlan : function(tripPlan, restoring) {
-        var itin = tripPlan.itineraries[0];
-        var this_ = this;
-        
-      //raf vedi itinWidget
-        if(this.itinWidget == null) {
-            this.itinWidget = new otp.widgets.ItinerariesWidget(this.id+"-itinWidget", this);
-        }
-        if(restoring && this.restoredItinIndex) {
-            this.itinWidget.show();
-            this.itinWidget.updateItineraries(tripPlan.itineraries, tripPlan.queryParams, this.restoredItinIndex);
-            this.restoredItinIndex = null;
-        } else  {
-            this.itinWidget.show();
-            this.itinWidget.updateItineraries(tripPlan.itineraries, tripPlan.queryParams);
-        }
-                                
-        this.drawItinerary(itin);
-        
-        if(tripPlan.queryParams.mode === 'WALK,BICYCLE_RENT'  &&   itin.itinData.legs.length > 1  ) { // bikeshare trip   && not only foot leg
-            var rentedBikeLegs= _.filter(itin.itinData.legs, function(leg){
-                    return leg.rentedBike;
-            });
-            var eventFrom = rentedBikeLegs[0].from;
-            eventFrom.lng = eventFrom.lon;//add lng property as subsequent functions read that
-            var eventTo = rentedBikeLegs[rentedBikeLegs.length-1].to;
-            eventTo.lng = eventTo.lon;
-            var start_and_end_events = this.processEvents(eventFrom,eventTo );
-
-        }
-        else { // "my own bike" trip
-           	this.resetEventMarkers();
-        }	
-
-        //this.resultsWidget.show();
-        //this.resultsWidget.newItinerary(itin);
-                    
-        if(start_and_end_events !== undefined && tripPlan.queryParams.mode === 'WALK,BICYCLE_RENT') {
-            if(start_and_end_events['start'] && start_and_end_events['end']) {
-           	    this.bikeeventsWidget.setContentAndShow(
-           	        start_and_end_events['start'], 
-           	        start_and_end_events['end'],
-           	        this);
-           	    this.bikeeventsWidget.show();
-           	}
-           	else
-           	    this.bikeeventsWidget.hide();
-        }
-       	else {
-       	    this.bikeeventsWidget.hide();
-       	}
-    },
-*/    
-/*    noTripFound : function() {
-        this.resultsWidget.hide();
-    },
-*/        
-    
     onResetEvents : function(events) {
         this.resetEventMarkers();
-        this.categoriesWidget.setContentAndShow(this.events, this);
-    },
-    
-    resetEventMarkers : function() {
-        this.events.each(function(event) {
-            this.setEventMarker(event);
-        }, this);
     },
 
+    resetEventMarkers : function() {
+        this.events.each(function(event) {
+            if (event.get('catVisible'))
+                this.setEventMarker(event);
+        }, this);
+    },
+/*
     clearEventMarkers : function() {
         _.each(_.keys(this.markers), function(eventId) {
             this.removeEventMarker(eventId);
         s}, this);
     },
-    
+*/
     getEventMarker : function(event) {
         if (event instanceof Backbone.Model)
             return this.markers[event.id];
         else
             return this.markers[event];
     },
-    
+/*
     removeEventMarker : function(event) {
         var marker = this.getEventMarker(event);
         if (marker)
             this.eventsLayer.removeLayer(marker);
     },
-    
+*/
     addEventMarker : function(event, title, icon) {
         var eventData = event.toJSON(),
             marker;
         icon = icon || this.icons.getEventMarker(eventData);
-        
+
         //console.log(event);
         marker = new L.Marker(new L.LatLng(eventData.lat, eventData.lng), {icon: icon});
         this.markers[event.id] = marker;
-        this.eventsLayer.addLayer(marker);
+        //this.eventsLayer.addLayer(marker);
+        if(event.get('category') == 'traffic')
+            this.trafficLayerGroup.addLayer(marker);
+        else if (event.get('category') == 'closure')
+            this.closureLayerGroup.addLayer(marker);
+        else if (event.get('category') == 'weather')
+            this.weatherLayerGroup.addLayer(marker);
+        else if (event.get('category') == 'others')
+            this.othersLayerGroup.addLayer(marker);
+            
+        
         marker.bindPopup(this.constructEventInfo(title, eventData));
     },
-    
+
     setEventMarker : function(event, title, icon) {
         var marker = this.getEventMarker(event);
         if (!marker)
@@ -364,71 +427,123 @@ otp.modules.datex.EventModule =
             this.updateEventMarker(marker, event, title, icon);
         }
     },
-    
+
     updateEventMarker : function(marker, event, title, icon) {
         var eventData = event.toJSON();
-        
+
         marker.setIcon(icon || this.icons.getEventMarker(eventData));
 
         marker.bindPopup(this.constructEventInfo(title, eventData));
     },
-    
+
     initEvents : function() {
         this.markers = {};
         this.events = new otp.modules.datex.EventCollection();
         this.events.on('reset', this.onResetEvents, this);
-        
+
         this.events.fetch({reset: true});
     },
 
     reloadEvents : function(events) {
-        this.events.fetch({reset: true});
+        clazz = this;
+        this.events.fetch({
+            success: function(){
+                clazz.refresh()
+            },
+            reset: true});
     },
-            
+
     constructEventInfo : function(title, event) {
         name=event.eventDescription;
-    	
+
         header0 = name.indexOf(' ')>0 ? name.substring(0,name.indexOf(' ')+1):name;
     	header1 = name.indexOf(' ')>0 ? name.substring(name.indexOf(' ')):'';
-    	
+
     	info = '<h5 class="event"><span>'+header0+'</span>'+header1+'</h5>';
         info += event.primaryLocation
         return info;
     },
+    
+    trafficSwitchMap : function(){
+        var lmap = this.webapp.map.lmap;
+        if( lmap.hasLayer(this.trafficLayerGroup)  ){
+            lmap.removeLayer(this.trafficLayerGroup);
+        } else lmap.addLayer(this.trafficLayerGroup);
+    },
+    closureSwitchMap : function(){
+        var lmap = this.webapp.map.lmap;
+        if( lmap.hasLayer(this.closureLayerGroup)  ){
+            lmap.removeLayer(this.closureLayerGroup);
+        } else lmap.addLayer(this.closureLayerGroup);
+    },
+    weatherSwitchMap : function(){
+        var lmap = this.webapp.map.lmap;
+        if( lmap.hasLayer(this.weatherLayerGroup)  ){
+            lmap.removeLayer(this.weatherLayerGroup);
+        } else lmap.addLayer(this.weatherLayerGroup);
+    },
+    othersSwitchMap : function(){
+        var lmap = this.webapp.map.lmap;
+        if( lmap.hasLayer(this.othersLayerGroup)  ){
+            lmap.removeLayer(this.othersLayerGroup);
+        } else lmap.addLayer(this.othersLayerGroup);
+    },
+    
     //refresh event markers based on zoom level
     refresh : function() {
         this.filterEventsOnMapBounds();
-        this.categoriesWidget.setContentAndShow(this.events, this);
-    	 var lmap = this.webapp.map.lmap;
-         if(this.moduleSelected){
-        	 if( lmap.getZoom() < 8   && lmap.hasLayer(this.eventsLayer)  ){
-                  lmap.removeLayer(this.eventsLayer);
-        		 console.log('togli stazioni');
+        this.trafficEventsWidget.setContentAndShow(this.events, this);
+    	var lmap = this.webapp.map.lmap;
+        //console.log('markers', this.markers);
+        /*
+        if(this.moduleSelected){
+        	 if( lmap.getZoom() < 8){
+                 console.log('togli stazioni'); 
+                 if( lmap.hasLayer(this.trafficLayerGroup)  ){
+                  lmap.removeLayer(this.trafficLayerGroup);
+                 }
+                 if( lmap.hasLayer(this.closureLayerGroup)  ){
+                  lmap.removeLayer(this.closureLayerGroup);
+                 }
+                 if( lmap.hasLayer(this.weatherLayerGroup)  ){
+                  lmap.removeLayer(this.weatherLayerGroup);
+                 }
+                 if( lmap.hasLayer(this.othersLayerGroup)  ){
+                  lmap.removeLayer(this.othersLayerGroup);
+                 }
         	 }
-        	 if(lmap.getZoom() >= 8   &&  lmap.getZoom() < 16 && !lmap.hasLayer(this.eventsLayer)){
-        		 lmap.addLayer(this.eventsLayer);
-                 
-        		/* this.events.each(function(event) {
-        			 setStationMarker(event, 'no-title', this.icons.getMedium(eventData));
-        		 });*/
-        		 
+        	 if(lmap.getZoom() >= 8   &&  lmap.getZoom() < 16){
         		 console.log('metti stazioni piccole');
+                 if( !lmap.hasLayer(this.trafficLayerGroup)){
+        		    lmap.addLayer(this.trafficLayerGroup);
+                 }
+                 if( !lmap.hasLayer(this.closureLayerGroup)){
+                    lmap.addLayer(this.closureLayerGroup);
+                 }
+                 if( !lmap.hasLayer(this.weatherLayerGroup)){
+                    lmap.addLayer(this.weatherLayerGroup);
+                 }
+                 if( !lmap.hasLayer(this.othersLayerGroup)){
+                    lmap.addLayer(this.othersLayerGroup);
+                 }
+
         	 }
         	 if(lmap.getZoom() >= 16  ){
         		 console.log('icone grandi');
         	 }
-        }
+             
+        }*/
     },
     filterEventsOnMapBounds: function() {
             var bb = this.webapp.map.lmap.getBounds();
             this.events.each(function(event) {
                 if (bb.contains(event.latlng))
-                     event.attributes['visible'] = true
-                else event.attributes['visible'] = false
+                     event.set('visible', true)
+                else event.set('visible', false)
             });
-        
+
     },
-    
-                
+
+
     CLASS_NAME : "otp.modules.datex.EventModule"
 });

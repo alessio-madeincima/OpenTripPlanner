@@ -55,7 +55,7 @@
         </div>
   </div>
 
-  <div class='otp-bikeshare-stationsWidget-right'>    
+  <div class='otp-bikeshare-stationsWidget-right'>
         <div id='dropoff_btn'>
             <h5>{{{dropOff}}}</h5>
 			<p>{{endName}}</p>
@@ -65,19 +65,30 @@
   </div>
 </script>
 
-<script id="otp-datexEventList" type="text/html">
-    <div id="otp-datexEventList" style="position: relative;">
-        <h2>Notizie</h2>
-        <ul></ul>
-    </div>
+<script id="otp-datexCategoryList" type="text/html">
+
+        <h2>Notiziole</h2>
+        <ul id="catList">
+          <li><input type="checkbox" id="input-eventCategory-code" checked /><label for="input-eventCategory-code">{{code}} </label>
+
+          <li><input type="checkbox" id="input-eventCategory-chiusure"  checked /><label for="input-eventCategory-chiusure">{{chiusure}} </label>
+
+          <li><input type="checkbox" id="input-eventCategory-meteo"  checked /><label for="input-eventCategory-meteo">{{meteo}} </label>
+
+          <li><input type="checkbox" id="input-eventCategory-altro"  checked /><label for="input-eventCategory-altro">{{altro}} </label>
+        </ul>
+
 </script>
+
+<script id="otp-datexFilterEvents" type="text/html">
+        <input type="text" id="input-filterEvents" placeholder="{{placeholder}}" /> 
+</script>
+
 <script id="otp-datexEventItem" type="text/html">
-    <div id="otp-datexEventItem" style="position: relative;">
-        <li class="evento">
-    	  <a href="#" class="{{ev.style}}" _onclick="trafficCtrl.openInfoWindow('IREN_1117_3-1','TrafficEvent')">
+        
+    	  <a href="#" class="dtxEvt {{ev.style}}" _onclick="this.markers['{{ev.id}}'].openPopup();">
     		<h3>{{ev.roadNumber}} {{ev.roadName}}</h3>
     		<p>{{ev.locationDescription}} {{ev.eventDirection}}
-            
     		<em class="{{ev.status}}">{{ev.eventDescription}} {{ev.note}}</em>
             {{#ev.terminated}}
             <span style='color:green;font-weight:bold;'> Situazione tornata alla normalit&agrave;</span><br />
@@ -85,6 +96,6 @@
     		<time datetime="updateDate" pubdate="">{{ev.eventDates}}</time>
     		</p>
     	  </a>
-        </li>
-    </div>
+
 </script>
+
