@@ -51,8 +51,6 @@
 <script src="//cdn.jsdelivr.net/mustache.js/0.7.2/mustache.js"></script>
 <script src="js/lib/ICanHaz.js"></script>
 
-
-
 <!-- otp-specific imports -->
 <script src="js/otp/otp.js?v=1"></script>
 
@@ -202,6 +200,7 @@
 
 
 $(document).ready(function() {
+	
 	//Sets datepicker language based on selected/detected language in config.js
 	$.datepicker.setDefaults($.datepicker.regional[otp.config.locale.config.datepicker_locale_short]);
     var templateUrls = [ //new Array(
@@ -224,6 +223,11 @@ $(document).ready(function() {
             }
         });
     }
+		
+		$( "#nav-toggle" ).click(function() {
+			$( ".main-menu-5t" ).toggleClass("active");	
+			$( this ).toggleClass("active");					
+		});
 
 });
 
@@ -234,26 +238,38 @@ $(document).ready(function() {
 </head>
 <body>
 
+
+
 <header id="branding" role="banner" class="clearfix">
 
   <hgroup id="logo">
-      <h1 id="site-title">Pronto TPL</h1>
-  </hgroup>
+    <h1 id="site-title">Pronto TPL</h1>
+  </hgroup>  
+ 
 	<nav id="main-menu-container" class="main-menu-container">
-	<!--<ul id="main-menu-5t" class="main-menu-5t">
-			<li class="first active"><a href="#">Calcolo percorso</a></li>
-			<li><a href="#">Avvisi</a></li>
-			<li><a href="#">Contatti</a></li>
-		</ul>-->
-		<div id="language-switcher" class="language-switcher" />
+  
+	<ul id="main-menu-5t" class="main-menu-5t">
+    <li><a href="#">Calcolo percorso</a></li>
+    <li><a href="#">Home</a></li>
+    <li class="selected"><a href="#">Indicazioni stradali</a></li>
+    <li><a href="#">Traffico</a></li>
+    <li><a href="#">News</a></li>
+    <li><a href="#">Contatti</a></li>
+  </ul>
+  
+	<a id="nav-toggle" href="javascript:void(0)"><span></span></a>
+    
+	<div id="language-switcher" class="language-switcher"></div>
+  
 	</nav>
+  
 	<div class="partner">
 		<div class="partner-aux">
 			<a href="http://www.regione.piemonte.it/" class="logo-1 first" target="_blank">Regione Piemonte</a>
 		</div>
 	</div>
 
-</header><!-- #branding -->
+</header>
 
 <div id="map">
 	<a class="powered-by" href="http://www.5t.torino.it">Powered by 5T</a>
